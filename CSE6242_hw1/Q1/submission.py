@@ -95,6 +95,29 @@ class Graph:
         """
         return len(self.edges)
 
+
+    def get_edges_dict(self): 
+        actor_ids = []
+        edge_count = []
+        degree_dict= {}
+
+        for n in self.nodes:
+            node_id = n[0]
+            actor_ids.append(node_id)
+            count = 0
+            for edge in self.edges:
+                if node_id in edge:
+                    count += 1
+
+            edge_count.append(count)
+
+        for i in range(len(edge_count)):
+            degree_dict[actor_ids[i]] = edge_count[i]
+
+        return degree_dict
+
+
+
     def max_degree_nodes(self) -> dict:
         """
         Return the node(s) with the highest degree
@@ -180,6 +203,19 @@ class Graph:
                 return True
 
         return False
+
+    def get_k_nodes(self):
+        edges_dict = get_edges_dict()
+
+        more_than_one_count = 0
+
+        for n in self.nodes: 
+            if edges_dict[n] > 1:
+                more_than_one_count += 1
+
+        return more_than_one_count
+
+
 
 
 class TMDBAPIUtils:
