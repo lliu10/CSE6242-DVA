@@ -205,12 +205,14 @@ class Graph:
         return False
 
     def get_k_nodes(self):
-        edges_dict = get_edges_dict()
+        edges_dict = self.get_edges_dict()
 
         more_than_one_count = 0
 
-        for n in self.nodes: 
-            if edges_dict[n] > 1:
+
+        for n in self.nodes:
+
+            if edges_dict[n[0]] > 1:
                 more_than_one_count += 1
 
         return more_than_one_count
