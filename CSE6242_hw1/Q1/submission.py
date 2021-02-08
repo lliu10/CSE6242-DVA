@@ -1,6 +1,10 @@
 import http.client
 import json
 import csv
+import urllib.request
+import urllib.parse
+
+my_api_key = 'fa0b74631406cb7e556e50abc1edb711'
 
 
 #############################################################################################################################
@@ -50,47 +54,48 @@ class Graph:
         if with_nodes_file and with_edges_file:
             nodes_CSV = csv.reader(open(with_nodes_file))
             nodes_CSV = list(nodes_CSV)[1:]
-            self.nodes = [(n[0],n[1]) for n in nodes_CSV]
+            self.nodes = [(n[0], n[1]) for n in nodes_CSV]
 
             edges_CSV = csv.reader(open(with_edges_file))
             edges_CSV = list(edges_CSV)[1:]
-            self.edges = [(e[0],e[1]) for e in edges_CSV]
+            self.edges = [(e[0], e[1]) for e in edges_CSV]
 
-
-    def add_node(self, id: str, name: str)->None:
+    def add_node(self, id: str, name: str) -> None:
         """
         add a tuple (id, name) representing a node to self.nodes if it does not already exist
         The graph should not contain any duplicate nodes
         """
+        self.nodes.append((id, name))
 
         return None
 
-
-    def add_edge(self, source: str, target: str)->None:
+    def add_edge(self, source: str, target: str) -> None:
         """
         Add an edge between two nodes if it does not already exist.
         An edge is represented by a tuple containing two strings: e.g.: ('source', 'target').
         Where 'source' is the id of the source node and 'target' is the id of the target node
         e.g., for two nodes with ids 'a' and 'b' respectively, add the tuple ('a', 'b') to self.edges
         """
+        if (target, source) in self.edges:
+            return
+        else:
+            self.edges.append((source, target))
+
         return None
 
-
-    def total_nodes(self)->int:
+    def total_nodes(self) -> int:
         """
         Returns an integer value for the total number of nodes in the graph
         """
-        return NotImplemented
+        return len(self.nodes)
 
-
-    def total_edges(self)->int:
+    def total_edges(self) -> int:
         """
         Returns an integer value for the total number of edges in the graph
         """
-        return NotImplemented
+        return len(self.edges)
 
-
-    def max_degree_nodes(self)->dict:
+    def max_degree_nodes(self) -> dict:
         """
         Return the node(s) with the highest degree
         Return multiple nodes in the event of a tie
@@ -98,7 +103,27 @@ class Graph:
         e.g. {'a': 8}
         or {'a': 22, 'b': 22}
         """
-        return NotImplemented
+
+        degree_dict = {}
+
+        actor_ids = []
+        edge_count = []
+
+        for n in self.nodes:
+            node_id = n[0]
+            actor_ids.append(node_id)
+            count = 0
+            for edge in self.edges:
+                if node_id in edge:
+                    count += 1
+
+            edge_count.append(count)
+
+        for i in range(len(edge_count)):
+            if edge_count[i] == max(edge_count):
+                degree_dict[actor_ids[i]] = edge_count[i]
+
+        return degree_dict
 
 
     def print_nodes(self):
@@ -108,7 +133,6 @@ class Graph:
         """
         print(self.nodes)
 
-
     def print_edges(self):
         """
         No further implementation required
@@ -116,9 +140,8 @@ class Graph:
         """
         print(self.edges)
 
-
     # Do not modify
-    def write_edges_file(self, path="edges.csv")->None:
+    def write_edges_file(self, path="edges.csv") -> None:
         """
         write all edges out as .csv
         :param path: string
@@ -135,9 +158,8 @@ class Graph:
         edges_file.close()
         print("finished writing edges to csv")
 
-
     # Do not modify
-    def write_nodes_file(self, path="nodes.csv")->None:
+    def write_nodes_file(self, path="nodes.csv") -> None:
         """
         write all nodes out as .csv
         :param path: string
@@ -152,16 +174,21 @@ class Graph:
         nodes_file.close()
         print("finished writing nodes to csv")
 
+    def check_nodes(self, id: str) -> bool:
+        for node in self.nodes:
+            if id in node:
+                return True
+
+        return False
 
 
-class  TMDBAPIUtils:
+class TMDBAPIUtils:
 
     # Do not modify
-    def __init__(self, api_key:str):
-        self.api_key=api_key
+    def __init__(self, api_key: str):
+        self.api_key = api_key
 
-
-    def get_movie_cast(self, movie_id:str, limit:int=None, exclude_ids:list=None) -> list:
+    def get_movie_cast(self, movie_id: str, limit: int = None, exclude_ids: list = None) -> list:
         """
         Get the movie cast for a given movie id, with optional parameters to exclude an cast member
         from being returned and/or to limit the number of returned cast members
@@ -184,10 +211,54 @@ class  TMDBAPIUtils:
                 Note that this is an example of the structure of the list and some of the fields returned by the API.
                 The result of the API call will include many more fields for each cast member.
         """
-        return NotImplemented
 
+        credits_request = self.get_request('movie', movie_id, 'credits')
+        credits_data = self.get_data(credits_request)
+        credits_data = credits_data['cast']
 
-    def get_movie_credits_for_person(self, person_id:str, vote_avg_threshold:float=None)->list:
+        limited_cast = []
+
+        for i in range(len(credits_data)):
+            cast_dict = {'id': '', 'character': '', 'credit_id': ''}
+            if credits_data[i]['order'] < limit:
+                cast_dict['id'] = credits_data[i]['id']
+                cast_dict['character'] = credits_data[i]['character']
+                cast_dict['credit_id'] = credits_data[i]['credit_id']
+
+                limited_cast.append(cast_dict)
+            else:
+                continue
+
+        return limited_cast
+
+    def get_request(self, req_type: str, item_id: str, details='') -> str:
+        """
+        Function returns the request url
+
+        example: https://api.themoviedb.org/3/movie/603?api_key=fa0b74631406cb7e556e50abc1edb711&language=en-US
+
+        @param req_type: movie or person
+        @item_id: ID number
+        @returns: request URL
+        """
+        base_url = 'http://api.themoviedb.org/3/'
+
+        if details != '':
+            return base_url + req_type + '/' + item_id + '/' + details + '?api_key=' + self.api_key + '&language=en-US'
+        else:
+            return base_url + req_type + '/' + item_id + '?api_key=' + self.api_key + '&language=en-US'
+
+    def get_data(self, url_string: str) -> list:
+
+        http_obj = urllib.request.urlopen(url_string)
+        http_data = http_obj.read()
+
+        http_encode = http_obj.info().get_content_charset('utf8')
+        decoded_data = json.loads(http_data.decode(http_encode))
+
+        return decoded_data
+
+    def get_movie_credits_for_person(self, person_id: str, vote_avg_threshold: float = None) -> list:
         """
         Using the TMDb API, get the movie credits for a person serving in a cast role
         documentation url: https://developers.themoviedb.org/3/people/get-person-movie-credits
@@ -202,10 +273,36 @@ class  TMDBAPIUtils:
                 'title': 'Long, Stock and Two Smoking Barrels' # the title (not original title) of the credit
                 'vote_avg': 5.0 # the float value of the vote average value for the credit}, ... ]
         """
-        return NotImplemented
+
+        best_credits_list = []
+
+        lf_request = self.get_request('person', person_id, 'movie_credits')
+        lf_credits = self.get_data(lf_request)
+        lf_credits = lf_credits['cast']  # List containing dictionaries of film credits
+
+        for i in range(len(lf_credits)):
+            movie_dict = {'id': '', 'title': '', 'vote_avg': 0}
+            if lf_credits[i]['vote_average'] >= vote_avg_threshold:
+                movie_dict['id'] = lf_credits[i]['id']
+                movie_dict['title'] = lf_credits[i]['original_title']
+                movie_dict['vote_avg'] = lf_credits[i]['vote_average']
+
+                best_credits_list.append(movie_dict)
+
+        return best_credits_list
 
     def trial_method(self):
         print('Hello world')
+
+    def get_person_name(self, id: str) -> str:
+        name_request = self.get_request('person', id)
+        name_data = self.get_data(name_request)
+        name = name_data['name']
+
+        if ',' in name:
+            name = name.replace(',', '')
+
+        return name
 
 
 #############################################################################################################################
@@ -305,35 +402,87 @@ class  TMDBAPIUtils:
 #   - wait a while and then try again.  It may be necessary to insert periodic sleeps when you are building your graph.
 
 
-def return_name()->str:
+def return_name() -> str:
     """
     Return a string containing your GT Username
     e.g., gburdell3
     Do not return your 9 digit GTId
     """
-    return NotImplemented
+    return 'eperalta6'
 
 
-def return_argo_lite_snapshot()->str:
+def return_argo_lite_snapshot() -> str:
     """
     Return the shared URL of your published graph in Argo-Lite
     """
     return NotImplemented
 
 
-
 # You should modify __main__ as you see fit to build/test your graph using  the TMDBAPIUtils & Graph classes.
 # Some boilerplate/sample code is provided for demonstration. We will not call __main__ during grading.
 
-#My TMDB key: fa0b74631406cb7e556e50abc1edb711
+# My TMDB key: fa0b74631406cb7e556e50abc1edb711
 if __name__ == "__main__":
 
+    # BUILD BASE GRAPH
     graph = Graph()
     graph.add_node(id='2975', name='Laurence Fishburne')
-    tmdb_api_utils = TMDBAPIUtils(api_key='<your API key>')
+    tmdb_api_utils = TMDBAPIUtils(api_key=my_api_key)
+
+    lf_best_movies = tmdb_api_utils.get_movie_credits_for_person('2975', 8.0)
 
     # call functions or place code here to build graph (graph building code not graded)
     # Suggestion: code should contain steps outlined above in BUILD CO-ACTOR NETWORK
+
+    # For each movie credit
+    for i in range(len(lf_best_movies)):
+        movie_id = str(lf_best_movies[i]['id'])
+        limited_cast = tmdb_api_utils.get_movie_cast(movie_id, 3)  # List of dictionaires containing cast for each movie
+
+        base_nodes = []
+        # For each cast member
+        for j in range(len(limited_cast)):
+            person_id = str(limited_cast[j]['id'])
+
+            if graph.check_nodes(person_id):  # Don't add same node twice
+                continue
+            else:
+                graph.add_node(person_id, tmdb_api_utils.get_person_name(person_id))
+                base_nodes.append((person_id, tmdb_api_utils.get_person_name(person_id)))
+
+            graph.add_edge('2975', person_id)
+
+        passes = 2
+        nodes2 = []
+        for i in range(passes):
+            nodes = []
+            if i == 0:
+                nodes = base_nodes
+            else:
+                nodes = nodes2
+
+            # for each node in nodes
+            for n in nodes:
+                actor_id = n[0]
+                best_movie_credits = tmdb_api_utils.get_movie_credits_for_person(actor_id, 8.0)  # get best movie credit
+
+                # for each movie credit
+                for j in range(len(best_movie_credits)):
+                    new_movie_id = str(best_movie_credits[j]['id'])
+                    new_limited_cast = tmdb_api_utils.get_movie_cast(new_movie_id, 3)  # Get casts from movie credit
+
+                    # for each movie cast member
+                    for k in range(len(new_limited_cast)):
+                        new_person_id = str(new_limited_cast[k]['id'])
+
+                        if graph.check_nodes(new_person_id):
+                            continue
+                        else:
+                            graph.add_node(new_person_id, tmdb_api_utils.get_person_name(new_person_id))
+                            if i == 0:
+                                nodes2.append((new_person_id, tmdb_api_utils.get_person_name(new_person_id)))
+
+                        graph.add_edge(actor_id, new_person_id)
 
     graph.write_edges_file()
     graph.write_nodes_file()
