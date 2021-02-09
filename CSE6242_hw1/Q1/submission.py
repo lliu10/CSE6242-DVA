@@ -260,50 +260,36 @@ class TMDBAPIUtils:
 
         cast = []
 
-        #Try block for limiting number
-        if limit is not None:
-            for i in range(len(credits_data)):
-                cast_dict = {'id': '', 'character': '', 'credit_id': ''}
+        if exclude_ids is None:
+            exclude_ids = []
 
-                if credits_data[i]['order'] < limit:
-                    cast_dict['id'] = credits_data[i]['id']
-                    cast_dict['character'] = credits_data[i]['character']
-                    cast_dict['credit_id'] = credits_data[i]['credit_id']
+        #Conditional for limiting number
+        for i in range(len(credits_data)):
+            cast_dict = {'id': '', 'character': '', 'credit_id': ''}
 
-                    #Try block to catch ids in exclude_ids list
-                    try:
-                        if cast_dict['id'] not in exclude_ids:
-                            cast.append(cast_dict)
-                        else:
-                            continue
-
-                    except TypeError: #catch when except_id is None
-                        cast.append(cast_dict)
-
-                else:
+            if limit is not None and credits_data[i]['order'] < limit:
+                if credits_data[i]['id'] in exclude_ids:  #Conditional to exclude those in exclude_ids list
                     continue
 
-            if len(cast) < limit:
-                cast = self.get_movie_cast(movie_id) #If limit is a value that is larger than the length of the cast array,
-                                                    # call function recursively to get full cast
+                else:
+                    cast_dict['id'] = str(credits_data[i]['id'])
+                    cast_dict['character'] = credits_data[i]['character']
+                    cast_dict['credit_id'] = credits_data[i]['credit_id']
+                    cast.append(cast_dict)
 
-        else:
-            for i in range(len(credits_data)):
-                cast_dict = {'id': credits_data[i]['id'], 'character': credits_data[i]['character'],
-                             'credit_id': credits_data[i]['credit_id']}
+            elif limit is not None and credits_data[i]['order'] >= limit:
+                continue
 
-                try:
-                    if cast_dict['id'] not in exclude_ids:
-                        cast.append(cast_dict)
-                    else:
-                        continue
-
-                except TypeError: #catch when except_id is None
+            elif limit is None: #if no limit, then add all cast members
+                # Conditional to exclude those in exclude_ids list
+                if credits_data[i]['id'] in exclude_ids:
+                    continue
+                else:
+                    cast_dict = {'id': str(credits_data[i]['id']), 'character': credits_data[i]['character'],
+                                 'credit_id': str(credits_data[i]['credit_id'])}
                     cast.append(cast_dict)
 
         return cast
-
-
 
 
 
