@@ -76,10 +76,8 @@ class Graph:
         Where 'source' is the id of the source node and 'target' is the id of the target node
         e.g., for two nodes with ids 'a' and 'b' respectively, add the tuple ('a', 'b') to self.edges
         """
-        if (target, source) in self.edges:
-            return
-        else:
-            self.edges.append((source, target))
+
+        self.edges.append((source, target))
 
         return None
 
@@ -453,7 +451,7 @@ def return_argo_lite_snapshot() -> str:
     """
     Return the shared URL of your published graph in Argo-Lite
     """
-    return NotImplemented
+    return 'https://poloclub.github.io/argo-graph-lite/#c9bf2e33-590e-4f86-8873-e8731de84edf'
 
 
 # You should modify __main__ as you see fit to build/test your graph using  the TMDBAPIUtils & Graph classes.
@@ -520,7 +518,9 @@ if __name__ == "__main__":
                             if i == 0:
                                 nodes2.append((new_person_id, tmdb_api_utils.get_person_name(new_person_id)))
 
-                        graph.add_edge(actor_id, new_person_id)
+                        if (actor_id, new_person_id) not in graph.edges:
+                            graph.add_edge(actor_id, new_person_id)
+
 
     graph.write_edges_file()
     graph.write_nodes_file()
