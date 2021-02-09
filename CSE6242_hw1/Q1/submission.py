@@ -65,7 +65,9 @@ class Graph:
         add a tuple (id, name) representing a node to self.nodes if it does not already exist
         The graph should not contain any duplicate nodes
         """
-        self.nodes.append((id, name))
+        new_node = (id, name)
+        if new_node not in self.nodes:
+            self.nodes.append((id, name))
 
         return None
 
@@ -77,7 +79,11 @@ class Graph:
         e.g., for two nodes with ids 'a' and 'b' respectively, add the tuple ('a', 'b') to self.edges
         """
 
-        self.edges.append((source, target))
+        new_edge = (source, target)
+        reverse_edge = (target, source)
+
+        if new_edge not in self.edges and reverse_edge not in self.edges:
+            self.edges.append((source, target))
 
         return None
 
@@ -252,20 +258,54 @@ class TMDBAPIUtils:
         credits_data = self.get_data(credits_request)
         credits_data = credits_data['cast']
 
-        limited_cast = []
+        cast = []
 
-        for i in range(len(credits_data)):
-            cast_dict = {'id': '', 'character': '', 'credit_id': ''}
-            if credits_data[i]['order'] < limit:
-                cast_dict['id'] = credits_data[i]['id']
-                cast_dict['character'] = credits_data[i]['character']
-                cast_dict['credit_id'] = credits_data[i]['credit_id']
+        #Try block for limiting number
+        if limit is not None:
+            for i in range(len(credits_data)):
+                cast_dict = {'id': '', 'character': '', 'credit_id': ''}
 
-                limited_cast.append(cast_dict)
-            else:
-                continue
+                if credits_data[i]['order'] < limit:
+                    cast_dict['id'] = credits_data[i]['id']
+                    cast_dict['character'] = credits_data[i]['character']
+                    cast_dict['credit_id'] = credits_data[i]['credit_id']
 
-        return limited_cast
+                    #Try block to catch ids in exclude_ids list
+                    try:
+                        if cast_dict['id'] not in exclude_ids:
+                            cast.append(cast_dict)
+                        else:
+                            continue
+
+                    except TypeError: #catch when except_id is None
+                        cast.append(cast_dict)
+
+                else:
+                    continue
+
+            if len(cast) < limit:
+                cast = self.get_movie_cast(movie_id) #If limit is a value that is larger than the length of the cast array,
+                                                    # call function recursively to get full cast
+
+        else:
+            for i in range(len(credits_data)):
+                cast_dict = {'id': credits_data[i]['id'], 'character': credits_data[i]['character'],
+                             'credit_id': credits_data[i]['credit_id']}
+
+                try:
+                    if cast_dict['id'] not in exclude_ids:
+                        cast.append(cast_dict)
+                    else:
+                        continue
+
+                except TypeError: #catch when except_id is None
+                    cast.append(cast_dict)
+
+        return cast
+
+
+
+
 
     def get_request(self, req_type: str, item_id: str, details='') -> str:
         """
@@ -511,12 +551,10 @@ if __name__ == "__main__":
                     for k in range(len(new_limited_cast)):
                         new_person_id = str(new_limited_cast[k]['id'])
 
-                        if graph.check_nodes(new_person_id):
-                            continue
-                        else:
-                            graph.add_node(new_person_id, tmdb_api_utils.get_person_name(new_person_id))
-                            if i == 0:
-                                nodes2.append((new_person_id, tmdb_api_utils.get_person_name(new_person_id)))
+                        graph.add_node(new_person_id, tmdb_api_utils.get_person_name(new_person_id))
+
+                        if i == 0:
+                            nodes2.append((new_person_id, tmdb_api_utils.get_person_name(new_person_id)))
 
                         if (actor_id, new_person_id) not in graph.edges:
                             graph.add_edge(actor_id, new_person_id)
