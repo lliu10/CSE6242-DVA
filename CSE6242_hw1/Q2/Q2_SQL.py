@@ -61,20 +61,20 @@ class HW2_sql():
 
     # GTusername [0 points]
     def GTusername(self):
-        gt_username = "gburdell3"
+        gt_username = "eperalta6"
         return gt_username
     
     # Part a.i Create Tables [2 points]
     def part_ai_1(self,connection):
         ############### EDIT SQL STATEMENT ###################################
-        part_ai_1_sql = ""
+        part_ai_1_sql = "create table movies(id INT NOT NULL,title TEXT(50), score REAL)"
         ######################################################################
         
         return self.execute_query(connection, part_ai_1_sql)
 
     def part_ai_2(self,connection):
         ############### EDIT SQL STATEMENT ###################################
-        part_ai_2_sql = ""
+        part_ai_2_sql = "create table movie_cast(movie_id INT, cast_id INT, cast_name TEXT, birthday TEXT, popularity REAL)"
         ######################################################################
         
         return self.execute_query(connection, part_ai_2_sql)
@@ -82,6 +82,8 @@ class HW2_sql():
     # Part a.ii Import Data [2 points]
     def part_aii_1(self,connection,path):
         ############### CREATE IMPORT CODE BELOW ############################
+        cur = connection.cursor()
+        movies_csv = csv.reader(open(path))
 
        ######################################################################
         
