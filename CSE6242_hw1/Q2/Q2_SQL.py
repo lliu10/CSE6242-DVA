@@ -67,14 +67,14 @@ class HW2_sql():
     # Part a.i Create Tables [2 points]
     def part_ai_1(self,connection):
         ############### EDIT SQL STATEMENT ###################################
-        part_ai_1_sql = "create table movies(id INT NOT NULL,title TEXT(50), score REAL)"
+        part_ai_1_sql = "CREATE TABLE movies(id INT,title TEXT(50), score REAL)"
         ######################################################################
         
         return self.execute_query(connection, part_ai_1_sql)
 
     def part_ai_2(self,connection):
         ############### EDIT SQL STATEMENT ###################################
-        part_ai_2_sql = "create table movie_cast(movie_id INT, cast_id INT, cast_name TEXT, birthday TEXT, popularity REAL)"
+        part_ai_2_sql = "CREATE TABLE movie_cast(movie_id INT, cast_id INT, cast_name TEXT, birthday TEXT, popularity REAL)"
         ######################################################################
         
         return self.execute_query(connection, part_ai_2_sql)
@@ -83,7 +83,10 @@ class HW2_sql():
     def part_aii_1(self,connection,path):
         ############### CREATE IMPORT CODE BELOW ############################
         cur = connection.cursor()
-        movies_csv = csv.reader(open(path))
+        with open(path, r) as file_obj:
+            movies_csv = csv.reader(file_obj)
+            for row in movies_csv:
+                cur.execute("INSERT INTO movies VALUES(?, ?, ?)", row)
 
        ######################################################################
         
@@ -93,6 +96,11 @@ class HW2_sql():
     
     def part_aii_2(self,connection, path):
         ############### CREATE IMPORT CODE BELOW ############################
+        cur = connection.cursor()
+        with open(path, r) as file_obj:
+            movie_cast_csv = csv.reader(file_obj)
+            for row in movie_cast_csv:
+                cur.execute("INSERT INTO movies VALUES(?, ?, ?, ?, ?)", row)
         
         ######################################################################
         
@@ -103,13 +111,14 @@ class HW2_sql():
     # Part a.iii Vertical Database Partitioning [5 points]
     def part_aiii(self,connection):
         ############### EDIT CREATE TABLE SQL STATEMENT ###################################
-        part_aiii_sql = ""
+        part_aiii_sql = "CREATE TABLE cast_bio(cast_id INT, cast_name TEXT, birthday DATE, popularity REAL)"
+
         ######################################################################
         
         self.execute_query(connection, part_aiii_sql)
         
         ############### CREATE IMPORT CODE BELOW ############################
-        part_aiii_insert_sql = ""
+        part_aiii_insert_sql = 'INSERT INTO cast_bio(cast_id, cast_name,birthday,popularity) SELECT DISTINCT (cast_id, cast_name,birthday,popularity) from movie_cast'
         ######################################################################
         
         self.execute_query(connection, part_aiii_insert_sql)
