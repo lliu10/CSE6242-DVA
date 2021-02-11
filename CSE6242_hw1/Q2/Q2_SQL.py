@@ -111,14 +111,14 @@ class HW2_sql():
     # Part a.iii Vertical Database Partitioning [5 points]
     def part_aiii(self,connection):
         ############### EDIT CREATE TABLE SQL STATEMENT ###################################
-        part_aiii_sql = "CREATE TABLE cast_bio(cast_id INT, cast_name TEXT, birthday DATE, popularity REAL)"
+        part_aiii_sql = "CREATE TABLE cast_bio(cast_id INT, cast_name TEXT, birthday DATE, popularity REAL);"
 
         ######################################################################
         
         self.execute_query(connection, part_aiii_sql)
         
         ############### CREATE IMPORT CODE BELOW ############################
-        part_aiii_insert_sql = 'INSERT INTO cast_bio(cast_id, cast_name,birthday,popularity) SELECT DISTINCT (cast_id, cast_name,birthday,popularity) from movie_cast'
+        part_aiii_insert_sql = 'INSERT INTO cast_bio SELECT DISTINCT (cast_id, cast_name,birthday,popularity) from movie_cast;'
         ######################################################################
         
         self.execute_query(connection, part_aiii_insert_sql)
@@ -131,7 +131,7 @@ class HW2_sql():
     # Part b Create Indexes [1 points]
     def part_b_1(self,connection):
         ############### EDIT SQL STATEMENT ###################################
-        part_b_1_sql = ""
+        part_b_1_sql = "CREATE UNIQUE INDEX movie_index ON movies(id); CREATE UNIQUE INDEX cast_index ON movie_cast(cast_id); CREATE UNIQUE INDEX cast_bio_index ON cast_bio(cast_id);""
         ######################################################################
         return self.execute_query(connection, part_b_1_sql)
     
