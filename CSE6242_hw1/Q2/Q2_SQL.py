@@ -215,7 +215,15 @@ class HW2_sql():
     
     def part_gi(self,connection):
         ############### EDIT SQL STATEMENT ###################################
-        part_g_i_sql = ""
+        part_g_i_sql = "SELECT movie_cast.cast_id, movie_cast.cast_name, " \
+                       "printf('%.2f', AVG(good_collaboration.average_movie_score)) " \
+                       "as collaboration_score FROM movie_cast " \
+                       "INNER JOIN good_collaboration " \
+                       "ON movie_cast.cast_id = good_collaboration.cast_member_id1 " \
+                       "OR movie_cast.cast_id = good_collaboration.cast_member_id2 " \
+                       "GROUP BY movie_cast.cast_id " \
+                       "ORDER BY collaboration_score DESC, movie_cast.cast_name" \
+                       "nLIMIT 5;"
         ######################################################################
         cursor = connection.execute(part_g_i_sql)
         return cursor.fetchall()
