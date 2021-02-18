@@ -5,103 +5,14 @@ id,name
 18355,Alex Winter
 64,Gary Oldman
 1776,Francis Ford Coppola
-1920,Winona Ryder
-20766,Richard E. Grant
-20215,Billy Campbell
-2130,Cary Elwes
-41381,Sadie Frost
 564,Richard Linklater
 584,Philip K. Dick
-32233,Tommy Pallotta
-1124487,Isa Dick Hackett
-3223,Robert Downey Jr.
-57755,Woody Harrelson
-51792,Rory Cochrane
 529,Guy Pearce
 532,Joe Pantoliano
-1331,Hugo Weaving
-9575,Jada Pinkett Smith
-9340,Lana Wachowski
-9339,Lilly Wachowski
-3896,Liam Neeson
-7497,Holt McCallany
-42206,Matt McCoy
-1584347,Martin Sensmeier
-76234,Matt Salinger
-2620381,Chad Bruce
-1896599,Bj Verot
-1106200,Bradley Sawatzky
-2565695,Jake Kennerd
-1107983,Martin Luther King
-52057,Obba Babatundé
-110380,Colin Powell
-8349,Martin Sheen
-3084,Marlon Brando
-3087,Robert Duvall
 7073,Michael Berryman
 27991,Stuart Gordon
-37221,Penn Jillette
-74296,Teller
-97619,Linnea Quigley
-32813,Dominique Othenin-Girard
-671520,Screaming Mad George
-59004,Walter Josten
-92839,Joe Augustyn
-59003,Jeff Geoffray
-73033,Robert Crumb
-27992,Brian Yuzna
-27993,Jeffrey Combs
-27996,David Gale
 44038,Nancy Allen
 11784,Tom Atkins
-73040,Doug Bradley
-99906,John Bloom
-6574,Clancy Brown
-54853,Lori Cardille
-11770,John Carpenter
-14692,Nick Castle
-19266,Larry Cohen
-27995,Barbara Crampton
-35475,Sean S. Cunningham
-4600,Joe Dante
-65827,Keith David
-5139,Robert Englund
-90596,Katie Featherston
-61824,Mick Garris
-1041366,Geretta Geretta
-99994,Michael Gingold
-94490,Andre Gower
-2265262,Oliver Harper
-2809732,Spencer Hickman
-62596,Kane Hodder
-64796,Tom Holland
-1766087,James A. Janisse
-105656,Chris Irvine
-97724,Steve Johnson
-78021,Lloyd Kaufman
-234844,Jackie Kong
-5141,Heather Langenkamp
-65677,Don Mancini
-20953,Harry Manfredini
-83151,Kelli Maroney
-27737,Bill Moseley
-59287,Gregory Nicotero
-2064808,Phil Nobile Jr.
-44810,Cassandra Peterson
-2671468,James D. Rolfe
-52306,Robert Rusler
-11161,Tom Savini
-2809739,Ben Scrivens
-92312,Corey Taylor
-2809744,Brandon Tenold
-2617743,Cecil Trachenburg
-58608,Shinya Tsukamoto
-1453475,Ryan Turek
-16183,Gedde Watanabe
-86923,Caroline Williams
-35521,Matt Winston
-1029907,Heather Wixson
-109870,Tom Woodruff Jr.
 1415341,Kazuhiro Tsuji
 1267653,Chet Zar
 1003,Jean Reno
@@ -114,365 +25,214 @@ id,name
 10990,Emma Watson
 219479,Criss Angel
 1101349,Steve Aoki
-1407495,Miles Brown
-57906,Andrew Dice Clay
-74748,Randy Couture
-2472694,Chloe Louise Crawford
-2472695,Paris-Michael K. Jackson
-78892,Chuck Liddell
-78816,Frank Mir
-1505807,Paige VanZant
 5064,Meryl Streep
 488,Steven Spielberg
 2559324,Beth Lane
-2559325,Lea Madda
 27888,Raúl Juliá
-2630,Nastassja Kinski
-7202,Vittorio Storaro
-2565889,Tom Waits
 2303,Wim Wenders
 5293,Willem Dafoe
 3037,Richard Dreyfuss
 4951,Robert Dalva
 1,George Lucas
-6159,Ron Howard
-8434,Cindy Williams
-686,Willard Huyck
-687,Gloria Katz
-154,Walter Murch
-2871,Fred Roos
-12406,Paul Le Mat
-1270,Charles Martin Smith
-12408,Mackenzie Phillips
-12407,Candy Clark
-3,Harrison Ford
-8183,Kathleen Quinlan
-161912,Suzanne Somers
-7067,Haskell Wexler
 1032,Martin Scorsese
 1150,Brian De Palma
 489,Kathleen Kennedy
 55983,Jim Henson
 7908,Frank Oz
-1236773,Jane Henson
-64184,Jerry Juhl
-1192360,Ted Koppel
-141888,Jon Stone
-24328,Lew Grade
-110564,Maurice Sendak
-33162,Harry Belafonte
-65298,Brian Henson
-219195,Pam Arciero
-11850,Candice Bergen
-105307,Frances Bergen
-7487,David Bowie
-7174,Ray Charles
-6161,Jennifer Connelly
-10192,Jimmy Dean
-518,Danny DeVito
-138568,Juliana Donald
-1466,Charles Durning
-2314,Peter Falk
-28164,Charles Grodin
-18892,Goldie Hawn
-28418,Michael Hirsch
-5049,John Hurt
-29803,Madeline Kahn
-4610,John Landis
-67773,Steve Martin
-10222,Roger Moore
-1388472,Christine Nelson
-8261,Willie Nelson
-6168,Austin Pendleton
-24203,Rhea Perlman
-729,Lonny Price
-10168,Diana Rigg
-226789,Martin P. Robinson
-192632,David Rudman
-10557,Paul Simon
-109887,Caroll Spinney
-575512,Alice Tweedy
-199813,Scott Walker
-112035,Mike Wallace
-73210,Louis Zorich
-164131,Fran Brill
-141028,Johnny Carson
-77156,Kevin Clash
-202729,Stephen Garlick
-64181,Dave Goelz
-1228891,Louise Gold
-68456,Richard Hunt
-219193,Brian Muehl
-70772,Kathryn Mullen
-68455,Jerry Nelson
-235882,Rudolf Nureyev
-1236811,Eren Ozker
-189120,Karen Prell
-64180,Steve Whitmire
-2157,Robin Williams
 1158,Al Pacino
 134,Jamie Foxx
-738,Sean Connery
-5503,Gabrielle Anwar
-1461,George Clooney
-2090,Kirk Douglas
-1271,Andy García
-228,Ed Harris
-2231,Samuel L. Jackson
-41798,George Lopez
-39996,Sidney Lumet
-638,Michael Mann
-5577,Chris O'Donnell
-2228,Sean Penn
-22290,Leelee Sobieski
-1979,Kevin Spacey
-1152,Oliver Stone
-2954,Jeffrey Wright
-18250,Jon Avnet
 1006721,Charles Scorsese
-11483,Catherine Scorsese
-380,Robert De Niro
-4517,Joe Pesci
-1037,Harvey Keitel
-72861,Robbie Robertson
-2556,Amy Robinson
-1970993,Father Francis Principe
-102429,Roger Corman
-2554,Mardik Martin
-11472,Irwin Winkler
-14393,Jay Cocks
-1970997,Carrie Ricky
-3769,Michael Ballhaus
-10767,Barbara Hershey
-7163,Nicholas Pileggi
-8534,Kathy Bates
-1121,Benicio del Toro
-3392,Michael Douglas
-42571,Susan Lynch
-10648,Michael Kitchen
-385,Ian Richardson
-47698,Denis Lawson
-47644,Frances Barber
-31923,Oliver Ford Davies
-47943,Stephen Boxer
-189256,Maureen O'Brien
-189281,Philip Voss
-214521,Peter Waddington
-10978,Maggie Smith
-20162,Natasha Richardson
-2879,Rob Lowe
-4783,Sam Neill
-225692,Jeremy Irvine
-17258,Kerry Fox
-108120,Syd Barrett
-71252,David Gilmour
-108126,Richard Wright
-6968,Hugh Jackman
-65421,Elizabeth Rodriguez
-2387,Patrick Stewart
-1107296,Ben Platt
-2310369,Crystal Monee Hall
-2645967,Kojo Littles
-2645968,Allen Rene Louis
-1059597,Zoey Deutch
-84223,Anna Kendrick
-29221,Brittany Snow
-1496393,Beanie Feldstein
-52779,Ryan Murphy
-86232,Lucy Boynton
-973651,Billy Eichner
-80415,Judith Light
-2270221,Kathryn Gallagher
-23485,Marc Platt
-1777376,Benj Pasek
-2645971,Henry Platt
-1403179,Alex Timbers
-1070349,Michael Park
-2035461,Julia Schlaepfer
-1978834,Benjamin Barrett
-1118557,Ben Richardson
-2569154,Ryan J. Haddad
-2349287,Max Sheldon
-2133997,Bobby Conte Thornton
-2914688,Andrew Barth Feldman
-117669,Portia Doubleday
-558466,Alex Russell
-61555,Haley Ramm
-16431,Sam Elliott
-2203,Neal McDonough
-3026,Rob Reiner
-32,Robin Wright
-2127,James Wan
-2128,Leigh Whannell
-2675,Darren Lynn Bousman
-2150,Kevin Greutert
-2144,Tobin Bell
-16847,Eli Roth
-59291,Alexandre Aja
-2138,Shawnee Smith
-29704,Geoffrey Moore
-1913149,Ambra Moore
-15344,J.J. Abrams
-207606,Alessandra Ambrosio
-5471,Naveen Andrews
-68812,Edward Asner
-42157,Ed Begley Jr.
-8544,Eric Braeden
-13637,Joan Collins
-1711828,Ryan Destiny
-58502,Natalie Dormer
-20495,Jeff Fahey
-11275,Stephen Fry
-130591,Lisa Haydon
-1619777,Taylor Marie Hill
-38406,Paris Hilton
-1431060,Elsa Hosk
-6413,Danny Huston
-10342,Maud Adams
-86543,David Attenborough
-4786,Richard Attenborough
-145997,Sanjeev Bhaskar
-3616,Leslie Bricusse
-21029,Billy Burke
-1952502,Darius Caland
-1251069,Nathalie Emmanuel
-4757,Rupert Everett
-143061,Valentino Garavani
-1952503,Frank Gardner
-143062,Giancarlo Giammetti
-1952504,Josie James
-11370,Elton John
-22490,Matt Lattanzi
-10167,George Lazenby
-7218,Kristanna Loken
-16165,Jon Lovitz
-34901,Joanna Lumley
-1952505,Nigel Martinez
-1157919,Luisa Mattioli
-3061,Ewan McGregor
-311962,Christian Moore
-1231943,Deborah Moore
-1952506,Mia Moore
-1220147,Piers Morgan
-1952507,Lottie Moss
-8892,Olivia Newton-John
-1952508,Melissa Odabash
-1952509,Kira Panic
-1952510,Tamalah Panic
-93491,Will Poulter
-39762,Stefanie Powers
-15758,Queen Latifah
-158136,Naya Rivera
-84285,Yvonne Romain
-10223,Jane Seymour
-1619780,Romee Strijd
-55463,Jessica Stroup
-1431065,Jasmine Tookes
-1562323,Lisa Vanderpump
-80536,David Walliams
-82809,Annabelle Wallis
-80535,Robbie Williams
+8349,Martin Sheen
+3084,Marlon Brando
+3087,Robert Duvall
 14538,Don Phillips
 7779,Sean Daniel
 1820819,Kent Jones
 569,Ethan Hawke
-74568,Chris Hemsworth
-16828,Chris Evans
-103,Mark Ruffalo
-10850,Kevin Feige
-1108,Shane Black
-12052,Gwyneth Paltrow
-1896,Don Cheadle
-15277,Jon Favreau
-18473,James Badge Dale
-15860,Miguel Ferrer
-121953,Stephanie Szostak
-17181,Ty Simpkins
-46814,Dale Dickey
-15556,Rebecca Hall
-6162,Paul Bettany
-543505,Jake Johnson
-7624,Stan Lee
-2282,Ben Kingsley
-17604,Jeremy Renner
-1245,Scarlett Johansson
-7626,Avi Arad
-87172,Mark Millar
-1187909,Joe Quesada
-18288,Terrence Howard
-1229,Jeff Bridges
-9048,Clark Gregg
-91606,Tom Hiddleston
-172069,Chadwick Boseman
-1215522,Robin Roberts
-15234,David Arquette
-10583,Gisele Bündchen
-5916,Rosario Dawson
-122474,Jason Mraz
-19211,Ian Somerhalder
-4687,Patricia Arquette
-3910,Frances McDormand
-6807,Sam Rockwell
-3036,John Cusack
-74227,Morgan Lily
-2956,Amanda Peet
-10943,Francis Lawrence
-27972,Josh Hutcherson
-1231,Julianne Moore
-237455,Sam Claflin
-72129,Jennifer Lawrence
-96066,Liam Hemsworth
-9281,Elizabeth Banks
-932967,Mahershala Ali
-55636,Donald Sutherland
-17343,Robert Knepper
-1011904,Gwendoline Christie
-2283,Stanley Tucci
-1383546,Michael Garza
 46300,Alexander Nathan Etel
 27889,Stephan Elliott
-28641,Terence Stamp
-126332,Rebel Penfold-Russell
-1249772,Tim Chappel
-1371,David Wenham
-207922,Natasha Novak
-37625,Andrew Garfield
-65731,Sam Worthington
-4937,Vince Vaughn
-109,Elijah Wood
-1327,Ian McKellen
-882,Liv Tyler
-1298360,Laverne Cox
-1518933,MJ Rodriguez
-1717192,Yance Ford
-533717,Chaz Bono
-1440698,Jamie Clayton
-2683026,Tre'vell Anderson
-206739,Alexandra Billings
-2003777,Marquise Vilson
-1309923,Rain Valdez
-2311991,Chase Strangio
-2683028,Zeke Smith
-2430634,Brian Michael Smith
-1246290,Susan Stryker
-2258037,Leo Sheng
-1583356,Angelica Ross
-2030011,Hailie Sahar
-1583355,Jen Richards
-1472754,Trace Lysette
-2683031,Tiq Milan
-2643902,Mickey R. Mahoney
-1935918,Bianca Leigh
-1219117,Jazzmun
-1497919,Alexandra Grey
-1601960,Elliot Fletcher
-2045795,Ellie Desautels
-1538806,Zackary Drucker
-2078994,D'Lo
-1488613,Jessica Crockett
-1296849,Michael D. Cohen
-1231526,Candis Cayne
-166452,Sandra Caldwell
-2001597,Ser Anzoategui
-2683032,Nick Adams
-10369,Divine
+1331,Hugo Weaving
+10850,Kevin Feige
+3223,Robert Downey Jr.
+1107983,Martin Luther King
+52057,Obba Babatundé
+110380,Colin Powell
+180659,Rosa Parks
+1280183,Coretta Scott King
+2787630,Valentin Zorin
+89289,Jesse Jackson
+2102583,Andrew Cohen
+73988,Lyndon B. Johnson
+2803017,Arthur John Birch
+2954,Jeffrey Wright
+33663,Donald Trump
+937663,Neil Amdur
+1931175,Bob Beamon
+1700943,Jelani Cobb
+938972,Angela Davis
+1236595,Henry Louis Gates Jr.
+559610,Allen West
+2198533,Candace Owens
+2699648,Robert Woodson
+1209864,Yoruba Richen
+2685726,Delbert Hunt
+2764421,Marquette Folley
+2535,Vivica A. Fox
+225620,Rudolph Moise
+1038,Jodie Foster
+4173,Anthony Hopkins
+349,Scott Glenn
+4587,Halle Berry
+9780,Angela Bassett
+19011,George W. Bush
+146687,Tony Blair
+1122373,Marion Barry Jr.
+1122374,Chuck Brown
+1122375,Lewis Franklin
+1408141,Fred Korematsu
+1386798,Joseph McCarthy
+100709,Junior Wells
+21111,John F. Kennedy
+13348,Howard Hughes
+2802990,Jean Paul Getty
+2803001,Haroldson Lafayette Hunt
+117418,Mahalia Jackson
+1188876,Horace Clarence Boyer
+82702,Michael Jackson
+61399,Mike Ditka
+1701850,Jim McMahon
+1723195,Mike Singletary
+1050881,Jacqueline Kennedy
+1074129,Fred Rogers
+2066306,François Scarborough Clemmons
+173729,Yo-Yo Ma
+1184462,Ben Maccabee
+72129,Jennifer Lawrence
+10943,Francis Lawrence
+27972,Josh Hutcherson
+1072882,Mindy Robinson
+1987684,Dywayne Thomas
+1145892,Ed Koch
+227811,Herschel Walker
+1222706,Skip Bayless
+1167702,Bruno Sammartino
+1167703,Bob Backlund
+1748,William Shatner
+2323039,Catherine Mercado-Muñiz
+2339577,Carmen Yulín Cruz
+10127,Jon Voight
+1229169,Roger Ailes
+1816204,Frederick Oberlander
+1816207,Tevfik Arif
+56446,John Cena
+151043,Randy Orton
+77120,Steve Austin
+1314544,Cenk Uygur
+998458,Gavin McInnes
+1923219,Richard Spencer
+2569912,Liane Rudolph
+2601848,Pyotr Tolstoy
+1173567,Vladimir Pozner
+21216,Kim Delaney
+58792,Jack Scalia
+16620,Hulk Hogan
+2161106,Sebastian Gorka
+2161107,Raheem Kassam
+2161104,Corey Lewandowski
+2706019,Matt Furie
+2767011,Aiyana Udesen
+2255261,Michel Zlotowski
+4960,Charles Bronson
+15753,Jill Ireland
+1103791,Joan Agajanian Quinn
+95678,Jean-Michel Basquiat
+567335,Chris Benoit
+115788,Paul Michael Lévesque
+112219,Michael Hickenbottom
+937664,Abraham Beame
+937665,Bob Bright
+2791669,Erika Andiola
+2791670,Bob Bland
+1262488,Emicida
+10055,Fernanda Montenegro
+81724,Zeca Pagodinho
+27011,Vanessa Williams
+2238924,Florence LaRue
+2130,Cary Elwes
+16431,Sam Elliott
+2203,Neal McDonough
+504777,Andrew Breitbart
+561450,Herman Cain
+1087302,Thomas Sowell
+21353,Isaiah Washington
+105762,Jimmy Jean-Louis
+139,Uma Thurman
+140,Lucy Liu
+21563,Corin Nemec
+1922617,Joy Rovaris
+587035,Nadji Jeter
+154382,Jazsmin Lewis
+31134,Darrin Henson
+74613,Terri J. Vaughn
+2545,Lawrence Bender
+138,Quentin Tarantino
+1222355,Barry Nolan
+8984,Bill Pullman
+1220781,Shelly Altman
+115002,John Aniston
+7447,Alec Baldwin
+88620,Lauren Collins
+19961,Nina Dobrev
+180986,Cassie Steele
+1142230,Jessica Geneus
+1142232,Soledad Elizabeth Jean
+380,Robert De Niro
+13,Albert Brooks
+5049,John Hurt
+10774,Anne Bancroft
+9560,Ellen Burstyn
+689,Kate Capshaw
+8258,Ben Johnson
+12021,Mia Farrow
+18248,Mary-Louise Parker
+59219,Kyle Gallner
+9825,Saffron Burrows
+1137,Juliette Binoche
+11770,John Carpenter
+515,Glenn Close
+8891,John Travolta
+12852,Barry Corbin
+3800,Jerry Hall
+33181,Jimmy Smits
+63611,Nickolas Grace
+53574,Eric Thal
+2710,James Cameron
+44796,Franklyn Ajaye
+77896,Bill Bellamy
+1897,Bernie Mac
+18471,Anthony Anderson
+74036,Tom Arnold
+35705,Regina Hall
+143242,Terrence Jenkins
+56323,Tina Fey
+16828,Chris Evans
+103,Mark Ruffalo
+1189929,Condoleezza Rice
+7904,Billy Crystal
+134328,Alexandra Pelosi
+2801284,Anthony Amsterdam
+1670479,Abbas Abdi
+1625013,Mahmoud Ahmadinejad
+84384,Osama bin Laden
+1322032,John Ashcroft
+1322033,Bob Brenly
+2203808,Sérgio Vieira de Mello
+1442410,Trevor Phillips
+1442411,Nigel Farage
+1306064,Princess Diana
+174981,Prince Charles
+28626,Arielle Dombasle
+3614,Michel Houellebecq
+37759,Kathy Burke
+20056,Keith Allen
+2330903,Amir Amor

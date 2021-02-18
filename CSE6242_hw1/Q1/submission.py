@@ -477,7 +477,7 @@ def return_argo_lite_snapshot() -> str:
     """
     Return the shared URL of your published graph in Argo-Lite
     """
-    return 'https://poloclub.github.io/argo-graph-lite/#c9bf2e33-590e-4f86-8873-e8731de84edf'
+    return 'https://poloclub.github.io/argo-graph-lite/#400ca759-c6b0-44fd-b48b-6bdde165f020'
 
 
 # You should modify __main__ as you see fit to build/test your graph using  the TMDBAPIUtils & Graph classes.
@@ -537,6 +537,12 @@ if __name__ == "__main__":
                     for k in range(len(new_limited_cast)):
                         new_person_id = str(new_limited_cast[k]['id'])
 
+                        if graph.check_nodes(new_person_id):
+                            continue
+                        else:
+                            graph.add_node(new_person_id, tmdb_api_utils.get_person_name(new_person_id))
+                            if i == 0:
+                                nodes2.append((new_person_id, tmdb_api_utils.get_person_name(new_person_id)))
                         graph.add_node(new_person_id, tmdb_api_utils.get_person_name(new_person_id))
 
                         if i == 0:
