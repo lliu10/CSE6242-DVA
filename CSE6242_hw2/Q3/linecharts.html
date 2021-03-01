@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script type="text/javascript" src="../lib/d3.v5.min.js"></script>
+
+<style type="text/css">
+	/* Style the lines by removing the fill and applying a stroke */
+	.line {
+	    fill: none;
+	    stroke: #ffab00;
+	    stroke-width: 3;
+	}
+	  
+	.overlay {
+	  fill: none;
+	  pointer-events: all;
+	}
+
+	/* Style the dots by assigning a fill and stroke */
+	.dot {
+	    fill: #ffab00;
+	    stroke: #fff;
+	}
+	  
+	  .focus circle {
+	  fill: none;
+	  stroke: steelblue;
+	}
+
+</style>
+
+<body>
+	<div id="div1" class="svg-container"></div>
+	<div id="div2" class="svg-container"></div>
+	<div id="div3" class="svg-container"></div>
+	<div id="div4" class="svg-container"></div>
+
+	<script>
+
+		global_width = 960,
+		global_height = 500;
+		
+		var margin = {top: 30, right: 20, bottom: 30, left: 10}; 
+		var width = global_width - margin.left - margin.right, 
+		    height = global_height - margin.top - margin.bottom; 
+
+		var svg = d3.select("div#div1").append('svg')
+
+
+	</script>
+
+</body>

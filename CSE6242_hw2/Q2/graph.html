@@ -162,7 +162,7 @@ d3.dsv(",", "board_games.csv", function(d) {
 
       d3.select(this) //2.d.2 Marking pinned nodes 
       .append("text")
-      .attr("class", "name")
+      .attr("class", "pinned")
       .attr("x", -10)
       .attr("y",-5)
       .text("*")
@@ -187,12 +187,22 @@ d3.dsv(",", "board_games.csv", function(d) {
       }
   };
 
+  // 2.d.3 Double clicking to unpin and unmark a node
   function dblclick(d){
-    d3.select(this).select('text').select('name').remove()
+    d3.select(this).selectAll('text.pinned').remove() 
     d.fx = null;
     d.fy = null;
 
   };
+
+  //GT Username
+  svg.append('g')
+     .append('text')
+     .attr('id', 'credit')
+     .attr("transform", "translate(800,50)")
+     .attr("text-anchor", "right")
+     .attr("stroke", "black")
+     .text("eperalta6");
   
 }).catch(function(error) {
   console.log(error);
