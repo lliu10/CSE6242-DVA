@@ -128,7 +128,6 @@ d3.dsv(",", "board_games.csv", function(d) {
 
   // 2a. Add node labels at the top right of each node in bold
   node.append("text")
-      .attr('class', 'name')
       .attr("x", 5) 
       .attr("y", -10)
       .style("font-weight", 600)  
@@ -160,6 +159,14 @@ d3.dsv(",", "board_games.csv", function(d) {
       if (!d3.event.active) force.alphaTarget(0.3).restart();
       d.fx = d.x;
       d.fy = d.y;
+
+      d3.select(this) //2.d.2 Marking pinned nodes 
+      .append("text")
+      .attr("class", "name")
+      .attr("x", -10)
+      .attr("y",-5)
+      .text("*")
+      .style("font-size", "16px") 
   };
 
   function dragged(d) {
@@ -176,20 +183,14 @@ d3.dsv(",", "board_games.csv", function(d) {
       else {
           d.fx = d.x; //2.d.1 Pining a dragged node
           d.fy = d.y;
-          d3.select(this) //2.d.2 Marking pinned nodes 
-          .append("text")
-          .attr('class', 'pinned')
-          .attr("x", -10)
-          .attr("y",-5)
-          .text("*")
-          .style("font-size", "16px") 
-
 
       }
   };
 
-  function dblclick(){
-    d3.select(this).select('text.pinned').remove().alphaTarget(0.3).restart()
+  function dblclick(d){
+    d3.select(this).select('text').select('name').remove()
+    d.fx = null;
+    d.fy = null;
 
   };
   
