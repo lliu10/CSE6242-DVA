@@ -36,14 +36,86 @@
 
 	<script>
 
-		global_width = 960,
-		global_height = 500;
-		
-		var margin = {top: 30, right: 20, bottom: 30, left: 10}; 
-		var width = global_width - margin.left - margin.right, 
-		    height = global_height - margin.top - margin.bottom; 
+		// Setting margin
+		const width = 960,
+			  height = 500,
+			  margin = 5,
+			  padding = 5, 
+			  adj = 30;
 
+
+		//Appending first SVG element
 		var svg = d3.select("div#div1").append('svg')
+					.attr("preserveAspectRatio", "xMinYMin meet")
+					.attr('viewbox', '-'
+						+ adj + ' -'
+						+ adj + ' '
+						+ (width + adj*3) + " "
+						+ (height + adj*3))
+					.style('padding', padding)
+					.style('margin', margin)
+					.classed('svg-content', true);
+
+
+		timeConv = d3.timeParse("%b-%d-%y")
+		
+		//Load data
+		const dataset = d3.csv('boardgame_ratings.csv').then(function(data){
+			var slices = data.columns.slice(1).map(function(id){
+				return {
+					id: id, 
+					values: data.map(function(d){
+						return{
+							date: timeConv(d.date),
+							measurement: +d[id]
+						};
+
+					})
+				}
+			})
+
+		});
+
+
+
+		//Scales 
+		const xScale = d3.scaleTime().range([0, width]),
+			  yScale = d3.scaleLinear().rangeRound([height, 0]);
+
+		xScale.domain(d3.extent(data, function(d){ //data is undefined
+			return timeConv(d.date)}));
+
+		yScale.domain([(0), d3.max(slices, function(c){
+			return d3.max(c.values, function(d){
+				return d.measurement + 4;});
+			})
+		]);
+
+
+		//Axes
+		const yaxis = d3.axisLeft()
+						.ticks((slices[0].values).length)
+						.scale(yScale),
+
+				xaxis = d3.axisBottom()
+						  .ticks(d3.timeDay.every(1))
+						  .tickFormat(d3.timeFormat('%b %d'))
+						  .scale(xScale);
+
+		//Lines
+		const line= d3.line()
+					  .x(function(d){return xScale(d.date); })
+					  .y(function(d){return yScale(d.measurement);});
+		let id = 0;
+		const ids = function(){
+				return 'line-'+id++;
+		}
+
+
+	
+
+
+
 
 
 	</script>
