@@ -63,12 +63,11 @@
 		const dataset = d3.csv('boardgame_ratings.csv')
 
 		dataset.then(function(data){
+			// var games = [‘Catan’, ‘Codenames’, ‘Terraforming Mars’, ‘Gloomhaven’] //Create loop to extract data from csv 
 
-			console.log(data.columns)
-
-			// var slices = data.columns.slice(1).map(function(id){
+			// var slices = data.columns.map(function(id){
 			// 	return {
-			// 		id: id, 
+			// 		 id: id, 
 			// 		values: data.map(function(d){
 			// 			return{
 			// 				date: timeConv(d.date),
@@ -79,7 +78,7 @@
 			// 	}
 			// })
 			// console.log(slices[0])
-
+		console.log(data[0]['Catan=count'])	
 		});
 
 		// //Scales 
