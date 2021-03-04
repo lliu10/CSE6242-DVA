@@ -57,62 +57,83 @@
 					.classed('svg-content', true);
 
 
-		timeConv = d3.timeParse("%b-%d-%y")
+	    function parseDate(date){
+	    	format = d3.timeFormat("%y/%d/%m")
+	    	// return d3.timeParse("%b %y")(date)
+	    	return format(date)
+   		 }
 		
+		const timeConv = d3.timeParse("%d-%b-%Y");
 		//Load data
-		const dataset = d3.csv('boardgame_ratings.csv')
+		// pathToData = 'boardgame_ratings.csv';
 
+		//  d3.dsv(',',pathToData, function(d){
+		//  	return{
+		//  		date: d.date,
+		//  		Catan_count: d['Catan_count']
+		//  	};
+
+		//  }).then(function(data){
+		//  	console.log(data)
+		//  })
+
+		const dataset = d3.csv('boardgame_ratings.csv');
 		dataset.then(function(data){
-			// var games = [‘Catan’, ‘Codenames’, ‘Terraforming Mars’, ‘Gloomhaven’] //Create loop to extract data from csv 
+			var slices = data.columns.slice(1).map(function(id){
+				id: id, 
+				values= data.map(function(d){ //Each row is stored as a dictionary in this array
+					return{
+						date: d.date, //I could create arrays for each of these to their hold values
+						Catan_count: d['Catan=count'],
+						Dominion_count: d['Dominion=count'],
+						Codenames_count: d['Codenames=count'],
+						Teraforming_Mars: d['Terraforming Mars=count'],
+						Gloomhaven_count: d['Gloomhaven=count'],
+						Magic_count: d['Magic: The Gathering=count'],
+						Monopoly_count: d['Monopoly=count']
 
-			// var slices = data.columns.map(function(id){
-			// 	return {
-			// 		 id: id, 
-			// 		values: data.map(function(d){
-			// 			return{
-			// 				date: timeConv(d.date),
-			// 				// measurement: +d[id]
+					}
+				})
+			})
 
-			// 			};
-			// 		})
-			// 	}
-			// })
-			// console.log(slices[0])
-		console.log(data[0]['Catan=count'])	
-		});
+			console.log(values)
+			// console.log(slices[Catan_count])
 
-		// //Scales 
-		// const xScale = d3.scaleTime().range([0, width]),
-		// 	  yScale = d3.scaleLinear().rangeRound([height, 0]);
+			// //Scales 
+			// const xScale = d3.scaleTime().range([0, width]),
+			// 	  yScale = d3.scaleLinear().rangeRound([height, 0]);
 
-		// xScale.domain(d3.extent(data, function(d){ //data is undefined
-		// 	return timeConv(d.date)}));
+			// xScale.domain(d3.extent(data, function(d){
+			// 	return timeConv(d.date)}));
 
-		// yScale.domain([(0), d3.max(slices, function(c){
-		// 	return d3.max(c.values, function(d){
-		// 		return d.measurement + 4;});
-		// 	})
-		// ]);
+			// yScale.domain([(0), d3.max(slices, function(c){
+			// 	return d3.max(c.values, function(d){  //values is undefined
+			// 		return d.Catan_count + 4;});
+			// 	})
+			// ]);
 
 
-		// //Axes
-		// const yaxis = d3.axisLeft()
-		// 				.ticks((slices[0].values).length)
-		// 				.scale(yScale),
+			// //Axes
+			// const yaxis = d3.axisLeft()
+			// 				.ticks((slices[0].values).length)
+			// 				.scale(yScale),
 
-		// 		xaxis = d3.axisBottom()
-		// 				  .ticks(d3.timeDay.every(1))
-		// 				  .tickFormat(d3.timeFormat('%b %d'))
-		// 				  .scale(xScale);
+			// 		xaxis = d3.axisBottom()
+			// 				  .ticks(d3.timeDay.every(1))
+			// 				  .tickFormat(d3.timeFormat('%b %d'))
+			// 				  .scale(xScale);
 
-		// //Lines
-		// const line= d3.line()
-		// 			  .x(function(d){return xScale(d.date); })
-		// 			  .y(function(d){return yScale(d.measurement);});
-		// let id = 0;
-		// const ids = function(){
-		// 		return 'line-'+id++;
-		// }
+			// //Lines
+			// const line= d3.line()
+			// 			  .x(function(d){return xScale(d.date); })
+			// 			  .y(function(d){return yScale(d.measurement);});
+			// let id = 0;
+			// const ids = function(){
+			// 		return 'line-'+id++;
+			// }
+		})
+
+
 
 
 	
