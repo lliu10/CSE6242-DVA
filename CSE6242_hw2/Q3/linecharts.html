@@ -60,56 +60,60 @@
 		timeConv = d3.timeParse("%b-%d-%y")
 		
 		//Load data
-		const dataset = d3.csv('boardgame_ratings.csv').then(function(data){
-			var slices = data.columns.slice(1).map(function(id){
-				return {
-					id: id, 
-					values: data.map(function(d){
-						return{
-							date: timeConv(d.date),
-							measurement: +d[id]
-						};
+		const dataset = d3.csv('boardgame_ratings.csv')
 
-					})
-				}
-			})
+		dataset.then(function(data){
+
+			console.log(data.columns)
+
+			// var slices = data.columns.slice(1).map(function(id){
+			// 	return {
+			// 		id: id, 
+			// 		values: data.map(function(d){
+			// 			return{
+			// 				date: timeConv(d.date),
+			// 				// measurement: +d[id]
+
+			// 			};
+			// 		})
+			// 	}
+			// })
+			// console.log(slices[0])
 
 		});
 
+		// //Scales 
+		// const xScale = d3.scaleTime().range([0, width]),
+		// 	  yScale = d3.scaleLinear().rangeRound([height, 0]);
+
+		// xScale.domain(d3.extent(data, function(d){ //data is undefined
+		// 	return timeConv(d.date)}));
+
+		// yScale.domain([(0), d3.max(slices, function(c){
+		// 	return d3.max(c.values, function(d){
+		// 		return d.measurement + 4;});
+		// 	})
+		// ]);
 
 
-		//Scales 
-		const xScale = d3.scaleTime().range([0, width]),
-			  yScale = d3.scaleLinear().rangeRound([height, 0]);
+		// //Axes
+		// const yaxis = d3.axisLeft()
+		// 				.ticks((slices[0].values).length)
+		// 				.scale(yScale),
 
-		xScale.domain(d3.extent(data, function(d){ //data is undefined
-			return timeConv(d.date)}));
+		// 		xaxis = d3.axisBottom()
+		// 				  .ticks(d3.timeDay.every(1))
+		// 				  .tickFormat(d3.timeFormat('%b %d'))
+		// 				  .scale(xScale);
 
-		yScale.domain([(0), d3.max(slices, function(c){
-			return d3.max(c.values, function(d){
-				return d.measurement + 4;});
-			})
-		]);
-
-
-		//Axes
-		const yaxis = d3.axisLeft()
-						.ticks((slices[0].values).length)
-						.scale(yScale),
-
-				xaxis = d3.axisBottom()
-						  .ticks(d3.timeDay.every(1))
-						  .tickFormat(d3.timeFormat('%b %d'))
-						  .scale(xScale);
-
-		//Lines
-		const line= d3.line()
-					  .x(function(d){return xScale(d.date); })
-					  .y(function(d){return yScale(d.measurement);});
-		let id = 0;
-		const ids = function(){
-				return 'line-'+id++;
-		}
+		// //Lines
+		// const line= d3.line()
+		// 			  .x(function(d){return xScale(d.date); })
+		// 			  .y(function(d){return yScale(d.measurement);});
+		// let id = 0;
+		// const ids = function(){
+		// 		return 'line-'+id++;
+		// }
 
 
 	
