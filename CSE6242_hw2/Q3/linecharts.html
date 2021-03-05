@@ -96,41 +96,70 @@
 				})
 			})
 
-			console.log(values)
-			// console.log(slices[Catan_count])
+			var dates = [],
+				Catan_count = [],
+				Dominion_count = [],
+				Codenames_count = [],
+				Teraforming_Mars = [],
+				Gloomhaven_count = [], 
+				Magic_count = [],
+				Monopoly_count = [],
+				all_values = [];
 
-			// //Scales 
-			// const xScale = d3.scaleTime().range([0, width]),
-			// 	  yScale = d3.scaleLinear().rangeRound([height, 0]);
+			// Convert string back to a date
+			time_parser = d3.timeParse("%m/%d/%y");
+			
+			for (index = 0; index < values.length; index++){
 
-			// xScale.domain(d3.extent(data, function(d){
-			// 	return timeConv(d.date)}));
+				dates.push(time_parser(values[index]['date'])), //Convert from string to obj
+				Catan_count.push(values[index]['Catan_count'])
+				Dominion_count.push(values[index]['Dominion_count']),
+				Codenames_count.push(values[index]['Codenames_count']),
+				Teraforming_Mars.push(values[index]['Teraforming_Mars']),
+				Gloomhaven_count.push(values[index]['Gloomhaven_count']),
+				Magic_count.push(values[index]['Magic_count']),
+				Monopoly_count.push(values[index]['Monopoly_count']),
 
-			// yScale.domain([(0), d3.max(slices, function(c){
-			// 	return d3.max(c.values, function(d){  //values is undefined
-			// 		return d.Catan_count + 4;});
-			// 	})
-			// ]);
+				all_values.push(values[index]['Catan_count'])
+				all_values.push(values[index]['Dominion_count']),
+				all_values.push(values[index]['Codenames_count']),
+				all_values.push(values[index]['Teraforming_Mars']),
+				all_values.push(values[index]['Gloomhaven_count']),
+				all_values.push(values[index]['Magic_count']),
+				all_values.push(values[index]['Monopoly_count']);
+			};
+
+			console.log(dates)
 
 
-			// //Axes
-			// const yaxis = d3.axisLeft()
-			// 				.ticks((slices[0].values).length)
-			// 				.scale(yScale),
+			//Scales 
+			const xScale = d3.scaleTime().range([0, width]),
+				  yScale = d3.scaleLinear().rangeRound([height, 0]);
 
-			// 		xaxis = d3.axisBottom()
-			// 				  .ticks(d3.timeDay.every(1))
-			// 				  .tickFormat(d3.timeFormat('%b %d'))
-			// 				  .scale(xScale);
+			xScale.domain(d3.extent(data, function(d){
+				return d.date}))
 
-			// //Lines
-			// const line= d3.line()
-			// 			  .x(function(d){return xScale(d.date); })
-			// 			  .y(function(d){return yScale(d.measurement);});
-			// let id = 0;
-			// const ids = function(){
-			// 		return 'line-'+id++;
-			// }
+			yScale.domain([(0), d3.max(all_values)])
+
+
+			//Axes
+			const yaxis = d3.axisLeft()
+							.ticks((all_values).length)
+							.scale(yScale),
+
+					xaxis = d3.axisBottom()
+							  .ticks(d3.timeDay.every(1))
+							  .tickFormat(d3.timeFormat('%b %d'))
+							  .scale(xScale);
+
+			//Lines
+			const line= d3.line()
+						  .x(function(d){return xScale(d.date); })
+						  .y(function(d){return yScale(d.measurement);});
+			let id = 0;
+			const ids = function(){
+					return 'line-'+id++;
+			}
 		})
 
 
