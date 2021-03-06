@@ -36,179 +36,198 @@
 
 	<script>
 
-		// Setting margin
-		const width = 960,
-			  height = 500,
-			  margin = 5,
-			  padding = 5, 
-			  adj = 30;
+    global_width = 960,
+    global_height = 500;
+
+    // define the dimensions and margins for the graph
+    var margin = {top: 30, right: 20, bottom: 30, left: 10}; 
+    var width = global_width - margin.left - margin.right, 
+        height = global_height - margin.top - margin.bottom; 
 
 
-		//Appending first SVG element
-		var svg = d3.select("div#div1").append('svg')
-					.attr("preserveAspectRatio", "xMinYMin meet")
-					.attr('viewbox', '-'
-						+ adj + ' -'
-						+ adj + ' '
-						+ (width + adj*3) + " "
-						+ (height + adj*3))
-					.style('padding', padding)
-					.style('margin', margin)
-					.classed('svg-content', true);
+	//Appending first SVG element
+	var svg1 = d3.select("div#div1")
+				.append("svg")
+				.attr('width', global_width)
+				.attr('height', global_height)
+				.append("g")
+				.attr("transform", "translate(80,20)")
 
 
-	    function parseDate(date){
-	    	format = d3.timeFormat("%y/%d/%m")
-	    	// return d3.timeParse("%b %y")(date)
-	    	return format(date)
-   		 }
+
+	var color_codes = {
+		'Catan': 'd55f34', //Orange
+		'Dominion': '1d3caf', //Dark blue 
+		'Codenames' : 'b02421', //Red
+		'Mars' : '56d795', //teal
+		'Gloomhaven' : '247f2c', //Dark green
+		'Magic' : 'c3a02e', //gold
+		'Dixit' : 'f5869d', //pink 
+		'Monopoly': '6a0979' //purple
+	};
+
+	d3.dsv(',', 'boardgame_ratings.csv', function(d){
+		return{
+			date: d3.timeParse("%Y-%m-%d")(d.date), //Parsing string to time obj
+			Catan_count: +d['Catan=count'],
+			Dominion_count: +d['Dominion=count'],
+			Codenames_count: +d['Codenames=count'],
+			Teraforming_Mars: +d['Terraforming Mars=count'],
+			Gloomhaven_count: +d['Gloomhaven=count'],
+			Magic_count: +d['Magic: The Gathering=count'],
+			Dixit_count: +d['Dixit=count'],
+			Monopoly_count: +d['Monopoly=count']
+
+		}
+
+		}).then(function(data){
 		
-		const timeConv = d3.timeParse("%d-%b-%Y");
-		//Load data
-		// pathToData = 'boardgame_ratings.csv';
+		var timeFormatter = d3.timeFormat('%b %y') //format time
 
-		//  d3.dsv(',',pathToData, function(d){
-		//  	return{
-		//  		date: d.date,
-		//  		Catan_count: d['Catan_count']
-		//  	};
+		var keys = ['Catan_count', 'Dominion_count', 'Codenames_count', 'Teraforming_Mars', 'Gloomhaven_count', 'Magic_count', 'Monopoly_count'],
 
-		//  }).then(function(data){
-		//  	console.log(data)
-		//  })
+			all_values = [];
 
-		const dataset = d3.csv('boardgame_ratings.csv');
-		dataset.then(function(data){
-			var values= data.map(function(d){ //Each row is stored as a dictionary in this array
-					return{
-						date: d.date, //I could create arrays for each of these to their hold values
-						Catan_count: d['Catan=count'],
-						Dominion_count: d['Dominion=count'],
-						Codenames_count: d['Codenames=count'],
-						Teraforming_Mars: d['Terraforming Mars=count'],
-						Gloomhaven_count: d['Gloomhaven=count'],
-						Magic_count: d['Magic: The Gathering=count'],
-						Monopoly_count: d['Monopoly=count']
-
-					}
-				})
-			
-
-			var dates = [], //string dates
-				Catan_count = [],
-				Dominion_count = [],
-				Codenames_count = [],
-				Teraforming_Mars = [],
-				Gloomhaven_count = [], 
-				Magic_count = [],
-				Monopoly_count = [],
-				all_values = [];
-
-			
-			// Convert string back to a date
-			for (index = 0; index < values.length; index++){
-
-				dates.push(values[index]['date']), //Convert from string to obj
-				Catan_count.push(values[index]['Catan_count'])
-				Dominion_count.push(values[index]['Dominion_count']),
-				Codenames_count.push(values[index]['Codenames_count']),
-				Teraforming_Mars.push(values[index]['Teraforming_Mars']),
-				Gloomhaven_count.push(values[index]['Gloomhaven_count']),
-				Magic_count.push(values[index]['Magic_count']),
-				Monopoly_count.push(values[index]['Monopoly_count']),
-
-				all_values.push(values[index]['Catan_count'])
-				all_values.push(values[index]['Dominion_count']),
-				all_values.push(values[index]['Codenames_count']),
-				all_values.push(values[index]['Teraforming_Mars']),
-				all_values.push(values[index]['Gloomhaven_count']),
-				all_values.push(values[index]['Magic_count']),
-				all_values.push(values[index]['Monopoly_count']);
-			};
-
-
-			// //Working through time parsing and formatting
-			// try_date = dates[0];
-			// console.log(try_date) //Expected: 2016-11-01 -> Correct!
-			
-			// time_parser = d3.timeParse("%Y-%m-%d");
-			// parsedDate = time_parser(try_date)
-			// console.log(parsedDate) //Expected: null -> Correct!
-
-			// time_formatter = d3.timeFormat('%b %Y');
-			// formattedTime = time_formatter(parsedDate)
-			// console.log(formattedTime) //Expected: Nov 2016 -> Correct!
-
-			function formattingTime(date){
-				time_parser = d3.timeParse("%Y-%m-%d");
-				parsedDate = time_parser(date)
-
-				time_formatter = d3.timeFormat('%b %Y');
-				formattedTime = time_formatter(parsedDate)
-
-				return formattedTime
-			}
-
-			formatted_dates = []
-
-			for (i =0; i < dates.length; i++){
-				formatted_dates.push(formattingTime(dates[i]));
+			for(i = 0; i < data.length; i++){
+				for (j = 0; j < keys.length; j++){
+					all_values.push(data[i][keys[j]])
+				}
 			} 
 
+		//Scales 
+		const xScale = d3.scaleTime().range([0, width]),
+			  yScale = d3.scaleLinear().rangeRound([height, 0]);
 
-			//Scales 
-			const xScale = d3.scaleTime().range([0, width]),
-				  yScale = d3.scaleLinear().rangeRound([height, 0]);
+		xScale.domain(d3.extent(data, function(d){	
+			return d.date})) // [Tue Nov 01 2016 00:00:00 GMT-0700 (Pacific Daylight Time), Sat Aug 01 2020 00:00:00 GMT-0700 (Pacific Daylight Time)]
 
-			xScale.domain(d3.extent(data, function(d){	
-				return d.date})) // ["2016-11-01", "2020-08-01"]
-
-			yScale.domain([(0), d3.max(all_values)]) // [0, "95775"]
-
-			//Axes
-			const yaxis = d3.axisLeft()
-							.ticks((all_values).length)
-							.scale(yScale);
-
-			const xaxis = d3.axisBottom()
-							.tickFormat(d3.timeFormat('%b %d'))
-							.scale(xScale);
+		yScale.domain([(0), d3.max(all_values)]) // [0, "95775"]
 
 
-			//Lines
-			const line= d3.line()
-						  .x(function(d){return xScale(formatted_dates);})
-					  	  .y(function(d){return yScale(all_values);});
-			// let id = 0;
-			// const ids = function(){
-			// 		return 'line-'+id++;
-			// }
+		//Declare x-axis and y-axis
+		var xAxis = d3.axisBottom(xScale)
+				  .tickFormat(d3.timeFormat('%b %y')),
+
+			yaxis = d3.axisLeft(yScale)
+					  .ticks(10);
+				
+		//Append axes
+		svg1.append('g')
+			.attr('class', 'x axis')
+			.attr("transform", "translate(0," + height + ")")
+			.call(xAxis);
+
+		svg1.append('g')
+			.attr('class', 'y axis')
+			.call(yaxis);
+
+		//Lines 
+		var Catan_line = d3.line()
+						   .x(function(d){return timeFormatter(d.date)}) //Need to format date appropriately
+						   .y(function(d) {return yScale(d.Catan_count)})
+						   .curve(d3.curveMonotoneX);
+
+		svg1.append("path")
+			.datum(data)
+			.style("stroke", color_codes['Catan'])
+			.attr('class', 'line')
+			.attr('d', Catan_line);
+
+
+
+
+
+
+
+
+
+	})
+			
+
+		// 	var dates = [], //string dates
+		// 		Catan_count = [],
+		// 		Dominion_count = [],
+		// 		Codenames_count = [],
+		// 		Teraforming_Mars = [],
+		// 		Gloomhaven_count = [], 
+		// 		Magic_count = [],
+		// 		Monopoly_count = [],
+		// 		all_values = [];
+
+			
+		// 	// Convert string back to a date
+		// 	for (index = 0; index < values.length; index++){
+
+		// 		dates.push(values[index]['date']), //Convert from string to obj
+		// 		Catan_count.push(values[index]['Catan_count'])
+		// 		Dominion_count.push(values[index]['Dominion_count']),
+		// 		Codenames_count.push(values[index]['Codenames_count']),
+		// 		Teraforming_Mars.push(values[index]['Teraforming_Mars']),
+		// 		Gloomhaven_count.push(values[index]['Gloomhaven_count']),
+		// 		Magic_count.push(values[index]['Magic_count']),
+		// 		Monopoly_count.push(values[index]['Monopoly_count']),
+
+		// 		all_values.push(values[index]['Catan_count'])
+		// 		all_values.push(values[index]['Dominion_count']),
+		// 		all_values.push(values[index]['Codenames_count']),
+		// 		all_values.push(values[index]['Teraforming_Mars']),
+		// 		all_values.push(values[index]['Gloomhaven_count']),
+		// 		all_values.push(values[index]['Magic_count']),
+		// 		all_values.push(values[index]['Monopoly_count']);
+		// 	};
+
+
+		// 	function formattingTime(date){
+		// 		time_parser = d3.timeParse("%Y-%m-%d");
+		// 		parsedDate = time_parser(date)
+
+		// 		time_formatter = d3.timeFormat('%b %Y');
+		// 		formattedTime = time_formatter(parsedDate)
+
+		// 		return formattedTime
+		// 	}
+
+		// 	formatted_dates = []
+
+		// 	for (i =0; i < dates.length; i++){
+		// 		formatted_dates.push(formattingTime(dates[i]));
+		// 	} 
+
+
+		// 	//Lines
+		// 	const line= d3.line()
+		// 				  .x(function(d){return xScale(formatted_dates);})
+		// 			  	  .y(function(d){return yScale(all_values);});
+		// 	// let id = 0;
+		// 	// const ids = function(){
+		// 	// 		return 'line-'+id++;
+		// 	// }
 	
 
-			svg.append('g')
-			   .attr("class", "x axis")
-			   .attr("transform", "translate(0," + height + ")")
-		       .call(xaxis);
+		// 	svg.append('g')
+		// 	   .attr("class", "x axis")
+		// 	   .attr("transform", "translate(0," + height + ")")
+		//        .call(xaxis);
 
-		    svg.append("g")
-		        .attr("class", "y axis")
-		        .call(yaxis)
-		        .append("text")
-		        .attr("transform", "rotate(-90)")
-		        .attr("dy", ".75em")
-		        .attr("y", 6)
-		        .style("text-anchor", "end")
-		        .text("Frequency");
+		//     svg.append("g")
+		//         .attr("class", "y axis")
+		//         .call(yaxis)
+		//         .append("text")
+		//         .attr("transform", "rotate(-90)")
+		//         .attr("dy", ".75em")
+		//         .attr("y", 6)
+		//         .style("text-anchor", "end")
+		//         .text("Frequency");
 
 		        
-	        // 9. Append the path, bind the data, and call the line generator 
-	        svg.append("line")
-	            .datum(Catan_count) // 10. Binds data to the line 
-	            .attr("class", "line") // Assign a class for styling 
-	            .attr("d", line); // 11. Calls the line generator
+	 //        // 9. Append the path, bind the data, and call the line generator 
+	 //        svg.append("line")
+	 //            .datum(Catan_count) // 10. Binds data to the line 
+	 //            .attr("class", "line") // Assign a class for styling 
+	 //            .attr("d", line); // 11. Calls the line generator
 
 	
-		})	
+		// })	
 
 
 
