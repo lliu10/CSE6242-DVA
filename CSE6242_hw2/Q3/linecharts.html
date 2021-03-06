@@ -79,9 +79,7 @@
 
 		const dataset = d3.csv('boardgame_ratings.csv');
 		dataset.then(function(data){
-			var slices = data.columns.slice(1).map(function(id){
-				id: id, 
-				values= data.map(function(d){ //Each row is stored as a dictionary in this array
+			var values= data.map(function(d){ //Each row is stored as a dictionary in this array
 					return{
 						date: d.date, //I could create arrays for each of these to their hold values
 						Catan_count: d['Catan=count'],
@@ -94,9 +92,9 @@
 
 					}
 				})
-			})
+			
 
-			var dates = [],
+			var dates = [], //string dates
 				Catan_count = [],
 				Dominion_count = [],
 				Codenames_count = [],
@@ -106,12 +104,11 @@
 				Monopoly_count = [],
 				all_values = [];
 
-			// Convert string back to a date
-			time_parser = d3.timeParse("%m/%d/%y");
 			
+			// Convert string back to a date
 			for (index = 0; index < values.length; index++){
 
-				dates.push(time_parser(values[index]['date'])), //Convert from string to obj
+				dates.push(values[index]['date']), //Convert from string to obj
 				Catan_count.push(values[index]['Catan_count'])
 				Dominion_count.push(values[index]['Dominion_count']),
 				Codenames_count.push(values[index]['Codenames_count']),
@@ -129,44 +126,89 @@
 				all_values.push(values[index]['Monopoly_count']);
 			};
 
-			console.log(dates)
 
+			// //Working through time parsing and formatting
+			// try_date = dates[0];
+			// console.log(try_date) //Expected: 2016-11-01 -> Correct!
+			
+			// time_parser = d3.timeParse("%Y-%m-%d");
+			// parsedDate = time_parser(try_date)
+			// console.log(parsedDate) //Expected: null -> Correct!
+
+			// time_formatter = d3.timeFormat('%b %Y');
+			// formattedTime = time_formatter(parsedDate)
+			// console.log(formattedTime) //Expected: Nov 2016 -> Correct!
+
+			function formattingTime(date){
+				time_parser = d3.timeParse("%Y-%m-%d");
+				parsedDate = time_parser(date)
+
+				time_formatter = d3.timeFormat('%b %Y');
+				formattedTime = time_formatter(parsedDate)
+
+				return formattedTime
+			}
+
+			formatted_dates = []
+
+			for (i =0; i < dates.length; i++){
+				formatted_dates.push(formattingTime(dates[i]));
+			} 
 
 			//Scales 
 			const xScale = d3.scaleTime().range([0, width]),
 				  yScale = d3.scaleLinear().rangeRound([height, 0]);
 
-			xScale.domain(d3.extent(data, function(d){
-				return d.date}))
+			xScale.domain(d3.extent(data, function(d){	
+				return d.date})) // ["2016-11-01", "2020-08-01"]
 
-			yScale.domain([(0), d3.max(all_values)])
-
+			yScale.domain([(0), d3.max(all_values)]) // [0, "95775"]
 
 			//Axes
 			const yaxis = d3.axisLeft()
 							.ticks((all_values).length)
-							.scale(yScale),
+							.scale(yScale);
 
-					xaxis = d3.axisBottom()
-							  .ticks(d3.timeDay.every(1))
-							  .tickFormat(d3.timeFormat('%b %d'))
-							  .scale(xScale);
+			const xaxis = d3.axisBottom()
+			    .ticks(d3.timeDay.every(1))
+			    .tickFormat(d3.timeFormat('%b %d'))
+			    .scale(xScale);
+
 
 			//Lines
 			const line= d3.line()
-						  .x(function(d){return xScale(d.date); })
-						  .y(function(d){return yScale(d.measurement);});
+						  .x(function(d){return xScale(formatted_dates); })
+					  .y(function(d){return yScale(all_values);});
 			let id = 0;
 			const ids = function(){
 					return 'line-'+id++;
 			}
-		})
-
-
-
-
 	
 
+			svg.append('g')
+			   .attr("class", "axis")
+			   .attr("transform", "translate(0," + height + ")")
+		       .call(xaxis);
+
+		    svg.append("g")
+		        .attr("class", "axis")
+		        .call(yaxis)
+		        .append("text")
+		        .attr("transform", "rotate(-90)")
+		        .attr("dy", ".75em")
+		        .attr("y", 6)
+		        .style("text-anchor", "end")
+		        .text("Frequency");
+
+		        
+	        // 9. Append the path, bind the data, and call the line generator 
+	        svg.append("line")
+	            .datum(Catan_count) // 10. Binds data to the line 
+	            .attr("class", "line") // Assign a class for styling 
+	            .attr("d", line); // 11. Calls the line generator
+
+	
+		})	
 
 
 
