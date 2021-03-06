@@ -155,6 +155,7 @@
 				formatted_dates.push(formattingTime(dates[i]));
 			} 
 
+
 			//Scales 
 			const xScale = d3.scaleTime().range([0, width]),
 				  yScale = d3.scaleLinear().rangeRound([height, 0]);
@@ -170,28 +171,27 @@
 							.scale(yScale);
 
 			const xaxis = d3.axisBottom()
-			    .ticks(d3.timeDay.every(1))
-			    .tickFormat(d3.timeFormat('%b %d'))
-			    .scale(xScale);
+							.tickFormat(d3.timeFormat('%b %d'))
+							.scale(xScale);
 
 
 			//Lines
 			const line= d3.line()
-						  .x(function(d){return xScale(formatted_dates); })
-					  .y(function(d){return yScale(all_values);});
-			let id = 0;
-			const ids = function(){
-					return 'line-'+id++;
-			}
+						  .x(function(d){return xScale(formatted_dates);})
+					  	  .y(function(d){return yScale(all_values);});
+			// let id = 0;
+			// const ids = function(){
+			// 		return 'line-'+id++;
+			// }
 	
 
 			svg.append('g')
-			   .attr("class", "axis")
+			   .attr("class", "x axis")
 			   .attr("transform", "translate(0," + height + ")")
 		       .call(xaxis);
 
 		    svg.append("g")
-		        .attr("class", "axis")
+		        .attr("class", "y axis")
 		        .call(yaxis)
 		        .append("text")
 		        .attr("transform", "rotate(-90)")
