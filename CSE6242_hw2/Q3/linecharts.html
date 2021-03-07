@@ -36,11 +36,11 @@
 
 	<script>
 
-    global_width = 960,
+    global_width = 1000,
     global_height = 500;
 
     // define the dimensions and margins for the graph
-    var margin = {top: 30, right: 20, bottom: 30, left: 10}; 
+    var margin = {top:100, right: 200, bottom: 50, left: 150}; 
     var width = global_width - margin.left - margin.right, 
         height = global_height - margin.top - margin.bottom; 
 
@@ -54,17 +54,8 @@
 				.attr("transform", "translate(80,20)")
 
 
-
-	var color_codes = {
-		'Catan': 'd55f34', //Orange
-		'Dominion': '1d3caf', //Dark blue 
-		'Codenames' : 'b02421', //Red
-		'Mars' : '56d795', //teal
-		'Gloomhaven' : '247f2c', //Dark green
-		'Magic' : 'c3a02e', //gold
-		'Dixit' : 'f5869d', //pink 
-		'Monopoly': '6a0979' //purple
-	};
+	//Set colors using schemeCategory10
+	var colors = d3.schemeCategory10;
 
 	d3.dsv(',', 'boardgame_ratings.csv', function(d){
 		return{
@@ -82,66 +73,129 @@
 
 		}).then(function(data){
 		
-		var timeFormatter = d3.timeFormat('%b %y') //format time
+				var timeFormatter = d3.timeFormat('%b %y') //format time
 
-		var keys = ['Catan_count', 'Dominion_count', 'Codenames_count', 'Teraforming_Mars', 'Gloomhaven_count', 'Magic_count', 'Monopoly_count'],
+				var keys = ['Catan_count', 'Dominion_count', 'Codenames_count', 'Teraforming_Mars', 'Gloomhaven_count', 'Magic_count','Dixit_count', 'Monopoly_count'],
 
-			all_values = [];
+					all_values = [];
 
-			for(i = 0; i < data.length; i++){
-				for (j = 0; j < keys.length; j++){
-					all_values.push(data[i][keys[j]])
-				}
-			} 
+					for(i = 0; i < data.length; i++){
+						for (j = 0; j < keys.length; j++){
+							all_values.push(data[i][keys[j]])
+						}
+					} 
 
-		//Scales 
-		const xScale = d3.scaleTime().range([0, width]),
-			  yScale = d3.scaleLinear().rangeRound([height, 0]);
+				//Scales 
+				const xScale = d3.scaleTime().range([0, width]),
+					  yScale = d3.scaleLinear().rangeRound([height, 0]);
 
-		xScale.domain(d3.extent(data, function(d){	
-			return d.date})) // [Tue Nov 01 2016 00:00:00 GMT-0700 (Pacific Daylight Time), Sat Aug 01 2020 00:00:00 GMT-0700 (Pacific Daylight Time)]
+				xScale.domain(d3.extent(data, function(d){	
+					return d.date})) // [Tue Nov 01 2016 00:00:00 GMT-0700 (Pacific Daylight Time), Sat Aug 01 2020 00:00:00 GMT-0700 (Pacific Daylight Time)]
 
-		yScale.domain([(0), d3.max(all_values)]) // [0, "95775"]
+				yScale.domain([(0), d3.max(all_values)]) // [0, "95775"]
 
 
-		//Declare x-axis and y-axis
-		var xAxis = d3.axisBottom(xScale)
-				  .tickFormat(d3.timeFormat('%b %y')),
+				//Declare x-axis and y-axis
+				var xAxis = d3.axisBottom(xScale)
+						  .tickFormat(d3.timeFormat('%b %y')),
 
-			yaxis = d3.axisLeft(yScale)
-					  .ticks(10);
+					yaxis = d3.axisLeft(yScale)
+							  .ticks(10);
+						
+				//Append axes
+				svg1.append('g')
+					.attr('class', 'x axis')
+					.attr("transform", "translate(0," + height + ")")
+					.call(xAxis);
+
+				svg1.append('g')
+					.attr('class', 'y axis')
+					.call(yaxis);
+
+				//Lines
+				var lines = [];
+
+				var Catan_line = d3.line()
+								   .x(function(d){return xScale(d.date)}) 
+								   .y(function (d) {return yScale(d.Catan_count)})
+								   .curve(d3.curveMonotoneX);
+
+				lines.push(Catan_line);
+
+				var Dominion_line = d3.line()
+									  .x(function(d){return xScale(d.date)})
+									  .y(function(d){return yScale(d.Dominion_count)})
+									  .curve(d3.curveMonotoneX);
+
 				
-		//Append axes
-		svg1.append('g')
-			.attr('class', 'x axis')
-			.attr("transform", "translate(0," + height + ")")
-			.call(xAxis);
+				lines.push(Dominion_line);
 
-		svg1.append('g')
-			.attr('class', 'y axis')
-			.call(yaxis);
+				var Codenames_line = d3.line()
+									  .x(function(d){return xScale(d.date)})
+									  .y(function(d){return yScale(d.Codenames_count)})
+									  .curve(d3.curveMonotoneX);
 
-		//Lines 
-		var Catan_line = d3.line()
-						   .x(function(d){return timeFormatter(d.date)}) //Need to format date appropriately
-						   .y(function(d) {return yScale(d.Catan_count)})
-						   .curve(d3.curveMonotoneX);
+				lines.push(Codenames_line)
 
-		svg1.append("path")
-			.datum(data)
-			.style("stroke", color_codes['Catan'])
-			.attr('class', 'line')
-			.attr('d', Catan_line);
+				var Mars_line = d3.line()
+								  .x(function(d){return xScale(d.date)})
+								  .y(function(d){return yScale(d.Teraforming_Mars)})
+								  .curve(d3.curveMonotoneX);
+
+				lines.push(Mars_line);
+
+				var Gloomhaven_line = d3.line()
+										.x(function(d){return xScale(d.date)})
+										.y(function(d){return yScale(d.Gloomhaven_count)})
+										.curve(d3.curveMonotoneX);
+
+				lines.push(Gloomhaven_line);
+
+				var Magic_line = d3.line()
+									.x(function(d){return xScale(d.date)})
+									.y(function(d){return yScale(d.Magic_count)})
+									.curve(d3.curveMonotoneX);
+
+				lines.push(Magic_line);
+
+				var Dixit_line = d3.line()
+									.x(function(d){return xScale(d.date)})
+									.y(function(d){return yScale(d.Dixit_count)})
+									.curve(d3.curveMonotoneX);
+
+				lines.push(Dixit_line);
+
+				var Monopoly_line = d3.line()
+									.x(function(d){return xScale(d.date)})
+									.y(function(d){return yScale(d.Monopoly_count)})
+									.curve(d3.curveMonotoneX)
 
 
 
+				lines.push(Monopoly_line);
 
+				var legend = ['Catan', 'Dominion', 'Codenames', 'Terraforming Mars', 'Gloomhaven', 'Magic: The Gathering', 'Dixit', 'Monopoly'];
 
+				
+				
+				for (index = 0; index < lines.length; index++){
 
+					svg1.append('path')
+						.datum(data)
+						.style("stroke", colors[index])
+						.attr('class', 'line')
+						.attr('id', function(d){return legend[index]})
+						.attr('d', lines[index])
+						.append('text')
+						.attr('class', 'series_id')
+						.attr("x", function(d){return d.x})
+						.attr("y", function(d){return d.y})
+						.text(legend[index])
+						
 
+				}
 
-
-	})
+			})
 			
 
 		// 	var dates = [], //string dates
