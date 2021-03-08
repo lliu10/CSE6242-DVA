@@ -1,10 +1,19 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
+
+<!-- >
+ -->
+
+
 <head>
 	<!-- add title -->
 	
-    <!-- import required libraries here -->
-	
+	<script type="text/javascript" src="../lib/d3.v5.min.js"></script>
+	<script type="text/javascript" src="../lib/d3-geo-projection.v2.min.js"></script>
+	<script type="text/javascript" src="../lib/d3-tip.min.js"></script>
+	<script type="text/javascript" src="../lib/d3.v5.min.js"></script>
+
+
 	<style>
 		/* define CSS rules here */
 	
@@ -16,23 +25,49 @@
     <!-- Add heading for the visualization -->
 	
 	<!-- Create dropdown element here. Options should be added after reading in game file, they should not be created here.-->
+
+	<select id= "dropdown"></select>
 	
 	<!-- append visualization svg to this div-->
+	<div id='container' class="svg-container"></div>
     <div id="choropleth"></div>
 
     <script>
 	
 		// enter code to define margin and dimensions for svg
+	    global_width = 1000,
+	    global_height = 500;
+
+	    var margin = {top:100, right: 200, bottom: 50, left: 150}; 
+	    var width = global_width - margin.left - margin.right, 
+	        height = global_height - margin.top - margin.bottom; 
 		
 		// enter code to create svg
+		var svg = d3.select("div#container")
+					.append("svg")
+					.attr('width', global_width)
+					.attr('height', global_height)
+					.append("g")
+					.attr("transform", "translate(80,20)")
+					.style("background-color","#c9e8fd");
 		
 		// enter code to create color scale
-		
+		colors = ['#deebf7','#9ecae1','#3182bd'] //Source: https://colorbrewer2.org/#type=sequential&scheme=Blues&n=3
+
 		// enter code to define tooltip
         
 		// enter code to define projection and path required for Choropleth
+		var projection = d3.geoMercator()
+						   .translate([width/2, height/2])
+						   .scale(2200).center([0,40]);
+		
+		
+		var path = d3.geoPath()
+					.projection(projection);
+
 
 		// define any other global variables 
+		var dataset = 
 
         Promise.all([
             // enter code to read files
