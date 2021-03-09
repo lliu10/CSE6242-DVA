@@ -48,7 +48,7 @@
 	        height = global_height - margin.top - margin.bottom; 
 		
 		// enter code to create svg
-		var svg = d3.select('body')
+		var svg = d3.select('div#container')
 					.append("svg")
 					.attr('width', global_width)
 					.attr('height', global_height)
@@ -128,12 +128,7 @@
             // })
 			
             // create Choropleth with default option. Call createMapAndLegend() with required arguments. 
-           	svg.append('g')
-           	   .selectAll('path')
-           	   .enter()
-           	   .append('path')
-           	   .attr('d', path)
-           	   
+			createMapAndLegend(world, gameData, null)
 
 
 
@@ -143,16 +138,13 @@
 		// this function should create a Choropleth and legend using the world and gameData arguments for a selectedGame
 		// also use this function to update Choropleth and legend when a different game is selected from the dropdown
         function createMapAndLegend(world, gameData, selectedGame){
-
-        	// svg.append('g')
-        	//    .attr('class', 'map')
-        	//    .selectAll('path')
-        	//    .data(topojson.feature(world, world.type.features.properties).features)
-        	//    .enter()
-        	//    .append('path')
-        	//    .attr( "d", path )
-        	//    .attr('class', map)
-        	
+           	
+           	//Creating map
+           	svg.selectAll('path')
+           	   .data(world.features)
+           	   .enter()
+           	   .append('path')
+           	   .attr('d', path)
 		
 			
         }
