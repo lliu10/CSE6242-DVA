@@ -10,8 +10,8 @@
 	
 	<script type="text/javascript" src="../lib/d3.v5.min.js"></script>
 	<script type="text/javascript" src="../lib/d3-geo-projection.v2.min.js"></script>
-<!-- 	<script type="text/javascript" src="../lib/d3-tip.min.js"></script>
- -->	<script type="text/javascript" src="../lib/d3.v5.min.js"></script>
+	<script type="text/javascript" src="../lib/d3-tip.min.js"></script>
+	<script type="text/javascript" src="../lib/d3.v5.min.js"></script>
 	<script type="text/javascript" src="../lib/topojson.v2.min.js"></script>
 
 
@@ -57,7 +57,7 @@
 
 		
 		// enter code to create color scale
-		var colors = ['#deebf7','#9ecae1','#3182bd'] //Source: https://colorbrewer2.org/#type=sequential&scheme=Blues&n=3
+		var colors = ['#eff3ff','#bdd7e7','#6baed6','#2171b5'] //Source: https://colorbrewer2.org/#type=sequential&scheme=Blues&n=3
 
 		// enter code to define tooltip
         
@@ -71,7 +71,6 @@
 					 .projection(projection);
 
 
-
 		// define any other global variables
 		var country_ratings = d3.csv('ratings-by-country.csv');
 		var world_countries = d3.json('world_countries.json');
@@ -80,7 +79,7 @@
         	
             // enter code to call ready() with required arguments
             var gameData = data[0], //country_ratings data 
-            	world = data[1]; // world_countries data
+            	world = data[1].features; // world_countries data
 
          	ready(null, world, gameData);
 
@@ -91,14 +90,13 @@
 		// gameData: data from ratings-by-country.csv
 		
         function ready(error, world, gameData) {
-        	console.log(gameData[0]['Average Rating'])
-
             // enter code to extract all unique games from gameData
             all_games = [];
             for (index = 0; index < gameData.length; index++){
             	all_games.push(gameData[index]['Game'])
 
             }
+
 
             unique_games = d3.set(all_games).values().sort();
 
@@ -127,55 +125,58 @@
             var dropdown_menu = d3.select('#dropdown');
 
             dropdown_menu.on("change", function(){
-            	var selectedGame = d3.event.target.value;
+            	var selectedGame = d3.event.target.value; //This passes the selected string
 
-            console.log(selectedGame)
+              createMapAndLegend(world, gameData, selectedGame)
+            });
 
-            createMapAndLegend(world, gameData, selectedGame)
-
-
-
-            })
-
-
-            // })
 			
             // create Choropleth with default option. Call createMapAndLegend() with required arguments. 
-            default_game = game_options[0]
-			createMapAndLegend(world, gameData, default_game)
-
+            default_game = game_options[0].text
+        		createMapAndLegend(world, gameData, default_game)
 
         }
 
 		// this function should create a Choropleth and legend using the world and gameData arguments for a selectedGame
 		// also use this function to update Choropleth and legend when a different game is selected from the dropdown
         function createMapAndLegend(world, gameData, selectedGame){
+          ratingsByCountry = {}
+
+          gameData.forEach(function(d){world[d.Country]= +d['Average Rating']}) //Make connection from gameData to map data using Country and names 
+          
+      
 
         	all_ratings =[]
         	selectedGame_ratings =[]
+
         	for (index =0 ; index < gameData.length; index++){
         		all_ratings.push(gameData[index]['Average Rating'])
-        		if (gameData[index]['Game'] == selectedGame){
+        		
+            if (gameData[index]['Game'] == selectedGame){
         			selectedGame_ratings.push(gameData[index]['Average Rating'])
+
         		}
 
         	}
+
 
         	var color_scale = d3.scaleQuantile()
         					.domain(all_ratings)
         					.range(colors)
         			
-           	
-           	//Creating map
-           	svg.selectAll('path')
-           	   .data(world.features)
-           	   .enter()
-           	   .append('path')
-           	   .attr('d', path)
-           	   .attr('stroke', "#808080")
-           	   .attr('fill', function(d){
-           	   	return color_scale(selectedGame_ratings)
-           	   })
+
+
+
+         	//Creating map
+         	svg.selectAll('path')
+         	   .data(world)
+         	   .enter()
+         	   .append('path')
+         	   .attr('d', path)
+         	   .attr('stroke', "#808080")
+         	   .attr('fill', function(){
+         	   	return color_scale(0) //Need to attribute this to data being passed 
+         	   })
 
            	//color scales
  		
