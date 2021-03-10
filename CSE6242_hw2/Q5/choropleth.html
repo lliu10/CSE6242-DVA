@@ -57,13 +57,13 @@
 
 		
 		// enter code to create color scale
-		colors = ['#deebf7','#9ecae1','#3182bd'] //Source: https://colorbrewer2.org/#type=sequential&scheme=Blues&n=3
+		var colors = ['#deebf7','#9ecae1','#3182bd'] //Source: https://colorbrewer2.org/#type=sequential&scheme=Blues&n=3
 
 		// enter code to define tooltip
         
 		// enter code to define projection and path required for Choropleth
 		var projection = d3.geoMercator()
-						   .scale(130)						   
+						   .scale(130)				   
 						   .translate([width/2, height/2]);
 		
 		
@@ -72,7 +72,7 @@
 
 
 
-		// define any other global variables 
+		// define any other global variables
 		var country_ratings = d3.csv('ratings-by-country.csv');
 		var world_countries = d3.json('world_countries.json');
 
@@ -91,6 +91,7 @@
 		// gameData: data from ratings-by-country.csv
 		
         function ready(error, world, gameData) {
+        	console.log(gameData[0]['Average Rating'])
 
             // enter code to extract all unique games from gameData
             all_games = [];
@@ -123,14 +124,25 @@
 
 
             // event listener for the dropdown. Update choropleth and legend when selection changes. Call createMapAndLegend() with required arguments.
-            // var drop_menu = d3.select('#dropdown').on('change', function(){
+            var dropdown_menu = d3.select('#dropdown');
+
+            dropdown_menu.on("change", function(){
+            	var selectedGame = d3.event.target.value;
+
+            console.log(selectedGame)
+
+            createMapAndLegend(world, gameData, selectedGame)
+
+
+
+            })
+
 
             // })
 			
             // create Choropleth with default option. Call createMapAndLegend() with required arguments. 
-			createMapAndLegend(world, gameData, null)
-
-
+            default_game = game_options[0]
+			createMapAndLegend(world, gameData, default_game)
 
 
         }
@@ -138,6 +150,21 @@
 		// this function should create a Choropleth and legend using the world and gameData arguments for a selectedGame
 		// also use this function to update Choropleth and legend when a different game is selected from the dropdown
         function createMapAndLegend(world, gameData, selectedGame){
+
+        	all_ratings =[]
+        	selectedGame_ratings =[]
+        	for (index =0 ; index < gameData.length; index++){
+        		all_ratings.push(gameData[index]['Average Rating'])
+        		if (gameData[index]['Game'] == selectedGame){
+        			selectedGame_ratings.push(gameData[index]['Average Rating'])
+        		}
+
+        	}
+
+        	var color_scale = d3.scaleQuantile()
+        					.domain(all_ratings)
+        					.range(colors)
+        			
            	
            	//Creating map
            	svg.selectAll('path')
@@ -145,7 +172,13 @@
            	   .enter()
            	   .append('path')
            	   .attr('d', path)
-		
+           	   .attr('stroke', "#808080")
+           	   .attr('fill', function(d){
+           	   	return color_scale(selectedGame_ratings)
+           	   })
+
+           	//color scales
+ 		
 			
         }
     </script>
