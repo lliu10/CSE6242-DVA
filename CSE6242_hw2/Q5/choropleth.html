@@ -13,6 +13,9 @@
 	<script type="text/javascript" src="../lib/d3-tip.min.js"></script>
 	<script type="text/javascript" src="../lib/d3.v5.min.js"></script>
 	<script type="text/javascript" src="../lib/topojson.v2.min.js"></script>
+  <script type="text/javascript" src="../lib/d3-legend.min.js"></script>
+
+
 
 
 
@@ -41,9 +44,9 @@
 	
 		// enter code to define margin and dimensions for svg
 	    global_width = 1000,
-	    global_height = 500;
+	    global_height = 700;
 
-	    var margin = {top:100, right: 200, bottom: 50, left: 150}; 
+	    var margin = {top:0, right: 100, bottom: 0, left: 10}; 
 	    var width = global_width - margin.left - margin.right, 
 	        height = global_height - margin.top - margin.bottom; 
 		
@@ -79,12 +82,30 @@
         	
             // enter code to call ready() with required arguments
             var gameData = data[0], //country_ratings data 
-            	world = data[1].features; // world_countries data
+            	world = data[1]; // world_countries data
 
          	ready(null, world, gameData);
 
         });
 		
+    //Chart Title 
+    svg.append('g')
+       .append('text')
+       .attr('id', 'title')
+       .attr("transform", "translate(705,20)")
+       .attr("stroke", "black")
+       .text("Choropleth Map of Board Game Ratings");
+
+    //GT Username
+    svg.append('g')
+       .append('text')
+       .attr('id', 'credit')
+       .attr("transform", "translate(850,680)")
+       .attr("text-anchor", "right")
+       .attr("stroke", "black")
+       .text("eperalta6");
+
+  
 		// this function should be called once the data from files have been read
 		// world: topojson from world_countries.json
 		// gameData: data from ratings-by-country.csv
@@ -140,46 +161,54 @@
 		// this function should create a Choropleth and legend using the world and gameData arguments for a selectedGame
 		// also use this function to update Choropleth and legend when a different game is selected from the dropdown
         function createMapAndLegend(world, gameData, selectedGame){
+
+          //Remove previous selection
+          svg.selectAll('.legend')
+             .remove()
+             .selectAll('.map')
+             .remove()
+
+                    
+        	selectedGame_ratings = []
           ratingsByCountry = {}
 
-          gameData.forEach(function(d){world[d.Country]= +d['Average Rating']}) //Make connection from gameData to map data using Country and names 
-          
-      
-
-        	all_ratings =[]
-        	selectedGame_ratings =[]
-
-        	for (index =0 ; index < gameData.length; index++){
-        		all_ratings.push(gameData[index]['Average Rating'])
-        		
-            if (gameData[index]['Game'] == selectedGame){
-        			selectedGame_ratings.push(gameData[index]['Average Rating'])
-
-        		}
-
-        	}
-
+          gameData.forEach(function(d){
+            if (d.Game == selectedGame){
+              ratingsByCountry[d.Country] = +d['Average Rating']              
+              selectedGame_ratings.push(+d['Average Rating'])
+            }})
+        	
 
         	var color_scale = d3.scaleQuantile()
-        					.domain(all_ratings)
-        					.range(colors)
-        			
+                              .domain(selectedGame_ratings)
+                              .range(colors);
 
+          //Create legend. Resource: https://d3-legend.susielu.com/
+          var legend = d3.legendColor()
+                         .labelFormat(d3.format(".2f"))
+                         .scale(color_scale)
 
+          svg.append('g')
+             .attr('class', 'legend')
+             .attr("transform", "translate(20,20)")
+             .call(legend)
 
-         	//Creating map
-         	svg.selectAll('path')
-         	   .data(world)
+          
+         	//Create map
+         	svg.append('g')
+             .attr('class', 'map')
+             .selectAll('path')
+         	   .data(world.features)
          	   .enter()
          	   .append('path')
-         	   .attr('d', path)
-         	   .attr('stroke', "#808080")
-         	   .attr('fill', function(){
-         	   	return color_scale(0) //Need to attribute this to data being passed 
-         	   })
+         	   .attr('stroke', "#000")
+             .attr('d', path)
+             .attr('fill', 
+              function(d){
+                  if(ratingsByCountry[d.properties.name]==undefined){return '#b3b3b3'}  
+                  else{return color_scale(ratingsByCountry[d.properties.name])}}) 
 
-           	//color scales
- 		
+                                          
 			
         }
     </script>

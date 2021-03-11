@@ -9,8 +9,283 @@
 <body>
 
 <div id="container"></div>
+<div id="div1" class="svg-container"></div>
+<div id="div2" class="svg-container"></div>
 
 <script>
+
+    global_width = 1000,
+    global_height = 500;
+
+    // define the dimensions and margins for the graph
+    var margin = {top:100, right: 200, bottom: 50, left: 150}; 
+    var width = global_width - margin.left - margin.right, 
+        height = global_height - margin.top - margin.bottom; 
+
+
+	//Appending first SVG element
+	var svg1 = d3.select("div#div1")
+				.append("svg")
+				.attr('width', global_width)
+				.attr('height', global_height)
+				.append("g")
+				.attr("transform", "translate(80,20)");
+
+	d3.dsv(',', 'average-rating.csv', function(d){
+		return{
+			    name: d.name,
+				year: +d.year,
+				avg_rating: +d.average_rating,
+				users: +d.users_rated
+
+		}
+	}).then(function(data){
+
+		all_ratings = [];
+		data.forEach(function(d){
+			all_ratings.push(d.avg_rating)
+
+		})
+
+
+		//Scales 
+		const xScale = d3.scaleLinear().range([0, width]),
+			  yScale = d3.scaleLinear().rangeRound([height, 0]);
+
+		xScale.domain([0, d3.max(all_ratings)]);
+		yScale.domain([0,600])
+
+		//Declare x-axis and y-axis
+		var xAxis = d3.axisBottom(xScale)
+					  .ticks(10)
+				  
+
+			yaxis = d3.axisLeft(yScale)
+					  .ticks(8);
+
+		//Append axes
+		svg1.append('g')
+			.attr('class', 'x axis')
+			.attr("transform", "translate(0," + height + ")")
+			.call(xAxis);
+
+		svg1.append('g')
+			.attr('class', 'y axis')
+			.call(yaxis);
+
+		// // score vs count of the ratings, then each year 
+		function getScoreTotal(data, year){
+
+			year_counts = {};
+			for (i = 0; i<d3.max(all_ratings); i++){
+				year_counts[i] = []
+			}
+
+
+			data.forEach(function(d){
+				if (d.year == year){
+					if (year_counts[Math.floor(d.avg_rating)] == undefined){
+						year_counts[0].push(d.avg_rating)
+					}
+					year_counts[Math.floor(d.avg_rating)].push(d.avg_rating)
+
+				}
+
+			})
+
+
+			return year_counts
+		}
+
+		//2015
+		var year_2015 = getScoreTotal(data, 2015);
+
+		line_2015 = d3.line()
+					  .x(function(d){
+					  	return xScale(Math.floor(d.avg_rating))})
+					  .y(function(d){
+					  	return yScale(year_2015[Math.floor(d.avg_rating)].length)
+					  })
+
+
+		svg1.append('path')
+			.datum(data.filter(function(d){return d.year == 2015}))
+			.style("stroke", 'red') //Color
+			.attr('class', 'line') // Assign a class for styling 
+			.attr('d', line_2015)
+			.style('fill', 'none') 
+			.style("stroke-width", 2)
+
+		//2016
+		year_2016 = getScoreTotal(data, 2016);
+		
+		line_2016 = d3.line()
+					  .x(function(d){
+					  	return xScale(Math.floor(d.avg_rating))})
+					  .y(function(d){
+					  	return yScale(year_2016[Math.floor(d.avg_rating)].length)
+					  })
+
+		svg1.append('path')
+			.datum(data.filter(function(d){return d.year == 2016}))
+			.style("stroke", 'blue') //Color
+			.attr('class', 'line') // Assign a class for styling 
+			.attr('d', line_2016)
+			.style('fill', 'none') 
+			.style("stroke-width", 2)
+
+		//2017
+		year_2017 = getScoreTotal(data, 2017);
+		
+		line_2017 = d3.line()
+					  .x(function(d){
+					  	return xScale(Math.floor(d.avg_rating))})
+					  .y(function(d){
+					  	return yScale(year_2017[Math.floor(d.avg_rating)].length)
+					  })
+
+		svg1.append('path')
+			.datum(data.filter(function(d){return d.year == 2017}))
+			.style("stroke", 'green') //Color
+			.attr('class', 'line') // Assign a class for styling 
+			.attr('d', line_2017)
+			.style('fill', 'none') 
+			.style("stroke-width", 2)
+
+		//2018
+		year_2018 = getScoreTotal(data, 2018);
+		
+		line_2018 = d3.line()
+					  .x(function(d){
+					  	return xScale(Math.floor(d.avg_rating))})
+					  .y(function(d){
+					  	return yScale(year_2018[Math.floor(d.avg_rating)].length)
+					  })
+
+		svg1.append('path')
+			.datum(data.filter(function(d){return d.year == 2018}))
+			.style("stroke", 'black') //Color
+			.attr('class', 'line') // Assign a class for styling 
+			.attr('d', line_2018)
+			.style('fill', 'none') 
+			.style("stroke-width", 2)
+
+	
+
+		//2019
+		year_2019 = getScoreTotal(data, 2019);
+		
+		line_2019 = d3.line()
+					  .x(function(d){
+					  	return xScale(Math.floor(d.avg_rating))})
+					  .y(function(d){
+					  	return yScale(year_2019[Math.floor(d.avg_rating)].length)
+					  })
+
+		svg1.append('path')
+			.datum(data.filter(function(d){return d.year == 2019}))
+			.style("stroke", 'gold') //Color
+			.attr('class', 'line') // Assign a class for styling 
+			.attr('d', line_2019)
+			.style('fill', 'none') 
+			.style("stroke-width", 2)
+
+
+		svg1.append('g')
+			.append('text')
+			.attr('x', width + 5)
+			.attr('y', height - 300)
+			.attr('fill', 'red')
+			.attr('stroke', "none")
+			.style('font-size','20')
+			.text('2015')
+
+		svg1.append('g')
+			.append('text')
+			.attr('x', width + 5)
+			.attr('y', height - 280)
+			.attr('fill', 'blue')
+			.attr('stroke', "none")
+			.style('font-size','20')
+			.text('2016')
+
+		svg1.append('g')
+			.append('text')
+			.attr('x', width + 5)
+			.attr('y', height - 260)
+			.attr('fill', 'green')
+			.attr('stroke', "none")
+			.style('font-size','20')
+			.text('2017')
+
+
+		svg1.append('g')
+			.append('text')
+			.attr('x', width + 5)
+			.attr('y', height - 240)
+			.attr('fill', 'black')
+			.attr('stroke', "none")
+			.style('font-size','20')
+			.text('2018')
+
+		svg1.append('g')
+			.append('text')
+			.attr('x', width + 5)
+			.attr('y', height - 220)
+			.attr('fill', 'gold')
+			.attr('stroke', "none")
+			.style('font-size','20')
+			.text('2019')
+
+		// Add the text label for axes     
+		svg1.append("g")
+		   .append('text')
+		   .attr('id', 'x_axis_label')
+		   .attr("x", width/2)
+		   .attr('y', height+ 50)
+		   .attr("text-anchor", "middle")
+		   .attr("stroke", "black")
+		   .text("Rating");
+
+		// Add the text label for Y axis      
+		svg1.append("g")
+		  .append('text')
+		  .attr('id', 'y_axis_label')
+		  .attr("transform", "rotate(-90)")
+		  .attr("x", -height/2)
+		  .attr("y", 25)
+		  .attr("dy", "-5.1em")
+		  .attr("text-anchor", "end")
+		  .attr("stroke", "black")
+		  .text("Count");
+
+		//Chart Title 
+		svg1.append('g')
+		   .append('text')
+		   .attr('id', 'title')
+		   .attr("transform", "translate(250,20)")
+		   .attr("stroke", "black")
+		   .text("Board Games by Ratings 2015-2019");
+
+		//GT Username
+		svg1.append('g')
+		   .append('text')
+		   .attr('id', 'credit')
+		   .attr("transform", "translate(760,400)")
+		   .attr("text-anchor", "right")
+		   .attr("stroke", "black")
+		   .text("eperalta6");
+
+
+
+
+
+
+	})
+
+
+
+	
 
 </script>
 
