@@ -1,0 +1,1 @@
+Non-linear scales like square root scales and log work best for data is highly scatter as it shows a smaller difference between data points as the values scale. With a log scale, this behavior works to show the skewness towards larger numbers.

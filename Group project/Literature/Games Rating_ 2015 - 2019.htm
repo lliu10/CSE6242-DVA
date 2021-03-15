@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<!-- saved from url=(0041)http://localhost:8000/Q4/interactive.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Games Rating: 2015 - 2019</title>
+  
+  <script type="text/javascript" src="./Games Rating_ 2015 - 2019_files/d3.v5.min.js"></script>
+  <script type="text/javascript" src="./Games Rating_ 2015 - 2019_files/d3-dsv.min.js"></script>
+</head>
+
+<body data-new-gr-c-s-check-loaded="14.997.0" data-gr-ext-installed="">
+
+<div id="container"></div>
+<div id="div1" class="svg-container"><svg width="1000" height="500"><g transform="translate(80,20)"><g class="x axis" transform="translate(0,350)" fill="none" font-size="10" font-family="sans-serif" text-anchor="middle"><path class="domain" stroke="currentColor" d="M0.5,6V0.5H650.5V6"></path><g class="tick" opacity="1" transform="translate(0.5,0)"><line stroke="currentColor" y2="6"></line><text fill="currentColor" y="9" dy="0.71em">0</text></g><g class="tick" opacity="1" transform="translate(68.22851078550485,0)"><line stroke="currentColor" y2="6"></line><text fill="currentColor" y="9" dy="0.71em">1</text></g><g class="tick" opacity="1" transform="translate(135.9570215710097,0)"><line stroke="currentColor" y2="6"></line><text fill="currentColor" y="9" dy="0.71em">2</text></g><g class="tick" opacity="1" transform="translate(203.68553235651456,0)"><line stroke="currentColor" y2="6"></line><text fill="currentColor" y="9" dy="0.71em">3</text></g><g class="tick" opacity="1" transform="translate(271.4140431420194,0)"><line stroke="currentColor" y2="6"></line><text fill="currentColor" y="9" dy="0.71em">4</text></g><g class="tick" opacity="1" transform="translate(339.1425539275242,0)"><line stroke="currentColor" y2="6"></line><text fill="currentColor" y="9" dy="0.71em">5</text></g><g class="tick" opacity="1" transform="translate(406.8710647130291,0)"><line stroke="currentColor" y2="6"></line><text fill="currentColor" y="9" dy="0.71em">6</text></g><g class="tick" opacity="1" transform="translate(474.59957549853397,0)"><line stroke="currentColor" y2="6"></line><text fill="currentColor" y="9" dy="0.71em">7</text></g><g class="tick" opacity="1" transform="translate(542.3280862840388,0)"><line stroke="currentColor" y2="6"></line><text fill="currentColor" y="9" dy="0.71em">8</text></g><g class="tick" opacity="1" transform="translate(610.0565970695436,0)"><line stroke="currentColor" y2="6"></line><text fill="currentColor" y="9" dy="0.71em">9</text></g></g><g class="y axis" fill="none" font-size="10" font-family="sans-serif" text-anchor="end"><path class="domain" stroke="currentColor" d="M-6,350.5H0.5V0.5H-6"></path><g class="tick" opacity="1" transform="translate(0,350.5)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em">0</text></g><g class="tick" opacity="1" transform="translate(0,292.5)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em">100</text></g><g class="tick" opacity="1" transform="translate(0,233.5)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em">200</text></g><g class="tick" opacity="1" transform="translate(0,175.5)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em">300</text></g><g class="tick" opacity="1" transform="translate(0,117.5)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em">400</text></g><g class="tick" opacity="1" transform="translate(0,58.5)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em">500</text></g><g class="tick" opacity="1" transform="translate(0,0.5)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em">600</text></g></g></g></svg></div>
+<div id="div2" class="svg-container"></div>
+
+<script>
+
+    global_width = 1000,
+    global_height = 500;
+
+    // define the dimensions and margins for the graph
+    var margin = {top:100, right: 200, bottom: 50, left: 150}; 
+    var width = global_width - margin.left - margin.right, 
+        height = global_height - margin.top - margin.bottom; 
+
+
+	//Appending first SVG element
+	var svg1 = d3.select("div#div1")
+				.append("svg")
+				.attr('width', global_width)
+				.attr('height', global_height)
+				.append("g")
+				.attr("transform", "translate(80,20)");
+
+	d3.dsv(',', 'average-rating.csv', function(d){
+		return{
+			    name: d.name,
+				year: +d.year,
+				avg_rating: +d.average_rating,
+				users: +d.users_rated
+
+		}
+	}).then(function(data){
+		var gameNest = d3.nest()
+					     .key(function(d){return +d.year;})
+					     .rollup(function(leaves){
+					     	return{
+					     		"Rating": leaves,
+					     		"sum": d3.sum(leaves, function(d){
+					     			return Math.floor(d.avg_rating)
+
+					     		})
+					     	}
+					     }).entries(data)
+					     
+
+		console.log(gameNest)
+
+		all_ratings = [];
+		data.forEach(function(d){
+			all_ratings.push(d.avg_rating)
+		})
+
+
+		//Scales 
+		const xScale = d3.scaleLinear().range([0, width]),
+			  yScale = d3.scaleLinear().rangeRound([height, 0]);
+
+		xScale.domain([0, d3.max(all_ratings)]);
+		yScale.domain([0,600])
+
+
+
+		//Declare x-axis and y-axis
+		var xAxis = d3.axisBottom(xScale)
+					  .ticks(10)
+				  
+
+			yaxis = d3.axisLeft(yScale)
+					  .ticks(8);
+
+		//Append axes
+		svg1.append('g')
+			.attr('class', 'x axis')
+			.attr("transform", "translate(0," + height + ")")
+			.call(xAxis);
+
+		svg1.append('g')
+			.attr('class', 'y axis')
+			.call(yaxis);
+
+
+
+	})
+
+
+
+		// // score vs count of the ratings, then each year 
+		// function getScoreTotal(data, year){
+
+		// 	year_counts = {};
+		// 	for (i = 0; i<d3.max(all_ratings); i++){
+		// 		year_counts[i] = []
+		// 	}
+
+
+		// 	data.forEach(function(d){
+		// 		if (d.year == year){
+		// 			if (year_counts[Math.floor(d.avg_rating)] == undefined){
+		// 				year_counts[0].push(d.avg_rating)
+		// 			}
+		// 			year_counts[Math.floor(d.avg_rating)].push(d.avg_rating)
+
+		// 		}
+
+		// 	})
+
+
+		// 	return year_counts
+		// }
+
+		// var year_2015 = getScoreTotal(data, 2015);
+
+
+		// line_2015 = d3.line()
+		// 			  .x(function(d){
+		// 			  	return xScale(Math.floor(d.avg_rating))})
+		// 			  .y(function(d){
+		// 			  	return yScale(year_2015[Math.floor(d.avg_rating)].length)
+		// 			  })
+
+
+		// svg1.append('path')
+		// 	.datum(data.filter(function(d){return d.year == 2015}))
+		// 	.style("stroke", 'black') //Color
+		// 	.attr('class', 'line') // Assign a class for styling 
+		// 	.attr('d', line_2015)
+		// 	.style('fill', 'none') 
+		// 	.style("stroke-width", 3)
+
+
+		
+
+
+	
+
+</script>
+
+</body></html>
